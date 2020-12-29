@@ -24,11 +24,11 @@
 </template>
 
 <script>
-import world from "./world.json";
 import { geoOrthographic, geoPath, select, zoom } from "d3";
+import world from "./world.json";
 
 function drawStars(startNumber) {
-  let data = [];
+  const data = [];
   for (let i = 0; i < startNumber; i++) {
     data.push({
       geometry: {
@@ -45,26 +45,26 @@ function drawStars(startNumber) {
 }
 
 function drawEarth(width, height) {
-  let spaceProjection = geoOrthographic().translate([width / 2, height / 2]);
+  const spaceProjection = geoOrthographic().translate([width / 2, height / 2]);
   spaceProjection.scale(spaceProjection.scale() * 3);
-  let spacePath = geoPath()
+  const spacePath = geoPath()
     .projection(spaceProjection)
     .pointRadius(1);
 
-  let projection = geoOrthographic().translate([width / 2, height / 2]);
-  let scale = projection.scale();
-  let path = geoPath()
+  const projection = geoOrthographic().translate([width / 2, height / 2]);
+  const scale = projection.scale();
+  const path = geoPath()
     .projection(projection)
     .pointRadius(2);
 
-  let svg = select("body")
+  const svg = select("body")
     .append("svg")
     .attr("width", width)
     .attr("height", height)
     .append("g");
 
-  let starList = drawStars(300);
-  let stars = svg
+  const starList = drawStars(300);
+  const stars = svg
     .append("g")
     .selectAll("g")
     .data(starList)
@@ -82,7 +82,7 @@ function drawEarth(width, height) {
     .attr("width", width)
     .attr("height", height);
 
-  let backgroundCircle = svg
+  const backgroundCircle = svg
     .append("circle")
     .attr("cx", width / 2)
     .attr("cy", height / 2)
@@ -91,9 +91,9 @@ function drawEarth(width, height) {
     .attr("filter", "url(#glow)")
     .attr("fill", "url(#gradBlue)");
 
-  let g = svg.append("g");
+  const g = svg.append("g");
 
-  let features = g
+  const features = g
     .selectAll(".feature")
     .data(world.features)
     .enter()
@@ -107,10 +107,10 @@ function drawEarth(width, height) {
       select(this).attr("class", "feature");
     });
 
-  let move = zoom()
+  const move = zoom()
     .scaleExtent([1, 8])
     .on("zoom", function(event) {
-      let eventScale = event.transform.k * scale;
+      const eventScale = event.transform.k * scale;
       // let rotate = [event.transform.x * -1, event.transform.y];
 
       projection.scale(eventScale);
@@ -143,16 +143,20 @@ export default {
 </script>
 
 <style>
-#info {
-  position: absolute;
-  z-index: 10;
-  left: 25px;
-  top: 25px;
-}
-
 #defs {
   height: 0;
   width: 0;
+  background-color: #444444;
+  background-image: -webkit-gradient(
+    linear,
+    left top,
+    right bottom,
+    from(#000),
+    to(#333)
+  );
+  background-image: -webkit-linear-gradient(left top, #000, #333);
+  background-image: -moz-linear-gradient(left top, #000, #333);
+  overflow: hidden;
 }
 
 .frame {
