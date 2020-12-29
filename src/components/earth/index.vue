@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import { geoOrthographic, geoPath, select, zoom } from 'd3';
+import { geoOrthographic, geoPath, select, zoom, drag } from 'd3';
 import world from './world.json';
 
 function drawStars(startNumber) {
@@ -112,16 +112,19 @@ function drawEarth(width, height) {
   const move = zoom()
     .scaleExtent([1, 5])
     .on('zoom', event => {
-      const eventScale = event.transform.k * scale;
-      let rotate = [event.transform.x * -1, event.transform.y];
+      if (event.sourceEvent.type === 'mousemove') {
+        let rotate = [event.transform.x * -1, event.transform.y];
+        projection.rotate(rotate);
+        spaceProjection.rotate([rotate[0] * -1, rotate[1] * -1]);
+      }
+      if (event.sourceEvent.type === 'wheel') {
+        const eventScale = event.transform.k * scale;
 
-      projection.scale(eventScale);
-      spaceProjection.scale(eventScale * 3);
-      backgroundCircle.attr('r', eventScale);
-      path.pointRadius((3 * eventScale) / scale);
-
-      projection.rotate(rotate);
-      spaceProjection.rotate([rotate[0] * -1, rotate[1] * -1]);
+        projection.scale(eventScale);
+        spaceProjection.scale(eventScale * 3);
+        backgroundCircle.attr('r', eventScale);
+        path.pointRadius((3 * eventScale) / scale);
+      }
 
       features.attr('d', path);
 
@@ -134,7 +137,7 @@ function drawEarth(width, height) {
 }
 
 export default {
-  name: 'Earth',
+  name: 'dataVisEarth',
   data() {
     return { width: 1000, height: 1000 };
   },
