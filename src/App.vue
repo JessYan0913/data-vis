@@ -1,18 +1,19 @@
 <template>
   <div id="app">
-    <earth />
+    <line-chart />
   </div>
 </template>
 
 <script>
-import Earth from './components/earth'
+import LineChart from './components/line';
+import BarChart from './components/bar';
 
 export default {
   name: 'App',
   components: {
-    Earth
+    LineChart,
   }
-}
+};
 </script>
 
 <style>
