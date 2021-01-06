@@ -1,10 +1,10 @@
 import {
   select,
   scaleLinear,
-  scaleOrdinal,
   scaleBand,
   extent,
-  max
+  schemeCategory10,
+  range
 } from 'd3';
 import Chart from './chart';
 
@@ -15,7 +15,6 @@ const BarChart = (() => {
   let yScale = scaleLinear();
   let xValue = [];
   let yValue = [];
-  let rectWidth = 10;
 
   class BarChart extends Chart {
     constructor(selection) {
@@ -29,58 +28,59 @@ const BarChart = (() => {
         yValue.push(y.call(data, item, index));
       });
 
-      let svg = select(this.selection)
-        .append('svg')
-        .attr('width', super.width())
-        .attr('height', super.height());
-
       let chartWidth =
         super.width() - super.margin().left - super.margin().right;
       let chartHeight =
         super.height() - super.margin().top - super.margin().bottom;
 
+      let svg = select(this.selection)
+        .append('svg')
+        .attr('width', chartWidth)
+        .attr('height', chartHeight);
+      console.log(yValue);
       yScale
-        .domain(extent(yValue, d => d[1]))
+        .domain(extent([].concat.apply([], yValue)))
         .range([chartHeight, 0])
         .nice();
 
       xScale
         .domain(xValue)
         .range([0, chartWidth])
-        .paddingOuter(0.2);
-      console.log(xScale.bandwidth());
+        .paddingOuter(1);
 
-      let pillarNum = max(yValue, d => d.length);
+      let xGroupScale = scaleBand()
+        .domain(range(yValue.length))
+        .range([0, xScale.bandwidth()]);
 
-      let xGroupScale = scaleOrdinal()
-        .domain(xValue)
-        .range([0, super.width() - super.margin().left - super.margin().right]);
-
-      yValue.forEach(function(item, index) {
-        svg
-          .selectAll('rect')
-          .data(item)
-          .enter()
-          .append('rect')
-          .attr('fill', 'red')
-          .attr('width', rectWidth - 2)
-          .attr('height', d => chartHeight - yScale(d))
-          .attr('x', (d, i) => {
-            return i;
-          })
-          .attr('y', d => yScale(d));
-      });
-
-      //   svg
-      //     .selectAll('rect')
-      //     .data(data)
-      //     .enter()
-      //     .append('rect')
-      //     .attr('fill', 'red')
-      //     .attr('width', 5)
-      //     .attr('height', d => super.height() - yScale(d[1]))
-      //     .attr('x', d => xScale(d[0]))
-      //     .attr('y', d => yScale(d[1]));
+      svg
+        .append('g')
+        .selectAll('g')
+        .data(yValue)
+        .enter()
+        .append('g')
+        .style('fill', function(d, i) {
+          return schemeCategory10[i];
+        })
+        .attr('transform', function(d, i) {
+          return 'translate(' + xGroupScale(i) + ',0)';
+        })
+        .selectAll('rect')
+        .data(function(d) {
+          return d;
+        })
+        .enter()
+        .append('rect')
+        .attr('width', xGroupScale.bandwidth())
+        .attr('height', function(d, i) {
+          return yScale(d);
+        })
+        .attr('x', function(d, i) {
+          console.log(xScale(i));
+          return xScale(i);
+        })
+        .attr('y', function(d) {
+          return chartHeight - yScale(d);
+        });
     }
 
     x(_) {
