@@ -4,7 +4,8 @@ import {
   scaleBand,
   extent,
   schemeCategory10,
-  range
+  range,
+  max
 } from 'd3';
 import Chart from './chart';
 
@@ -37,16 +38,18 @@ const BarChart = (() => {
         .append('svg')
         .attr('width', chartWidth)
         .attr('height', chartHeight);
-      console.log(yValue);
+
       yScale
+        //将二维数组转换为一维数组，也就是求出全部数据的最大值和最小值
         .domain(extent([].concat.apply([], yValue)))
         .range([chartHeight, 0])
         .nice();
 
       xScale
-        .domain(xValue)
+        //求二维数组中长度最长的数据
+        .domain(range(max(yValue, d => d.length)))
         .range([0, chartWidth])
-        .paddingOuter(1);
+        .paddingOuter(0.3);
 
       let xGroupScale = scaleBand()
         .domain(range(yValue.length))
