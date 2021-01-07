@@ -79,7 +79,6 @@ const BarChart = (() => {
           return chartHeight - yScale(d);
         })
         .attr('x', function(d, i) {
-          console.log(xScale(i));
           return xScale(i);
         })
         .attr('y', function(d) {
