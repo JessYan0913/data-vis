@@ -49,12 +49,12 @@ const BarChart = (() => {
       xScale
         //求二维数组中长度最长的数据
         .domain(range(max(yValue, d => d.length)))
-        .range([0, chartWidth])
-        .paddingOuter(0.3);
+        .range([0, chartWidth]);
 
       let xGroupScale = scaleBand()
         .domain(range(yValue.length))
-        .range([0, xScale.bandwidth()]);
+        .range([0, xScale.bandwidth()])
+        .paddingOuter(0.2);
 
       svg
         .append('g')
