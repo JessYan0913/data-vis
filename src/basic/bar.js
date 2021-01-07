@@ -1,5 +1,4 @@
 import {
-  select,
   scaleLinear,
   scaleBand,
   extent,
@@ -7,11 +6,12 @@ import {
   range,
   max
 } from 'd3';
+import { dimensionArray } from '../utils/array-util';
 import Chart from './chart';
 
 const BarChart = (() => {
   let x = d => d[0];
-  let y = d => d.slice(1, d.length);
+  let y = d => d;
   let xScale = scaleBand();
   let yScale = scaleLinear();
   let xValue = [];
@@ -24,30 +24,30 @@ const BarChart = (() => {
     }
 
     draw() {
-      let data = super.data();
+      let data = this.data();
       data.forEach((item, index) => {
         xValue.push(x.call(data, item, index));
         yValue.push(y.call(data, item, index));
       });
 
-      let chartWidth =
-        super.width() - super.margin().left - super.margin().right;
-      let chartHeight =
-        super.height() - super.margin().top - super.margin().bottom;
+      //判断数组维度，如果是一维数组，则一维数组变成二维数组
+      let yValueDimension = dimensionArray(yValue);
+      if (yValueDimension == 1) {
+        yValue = [yValue];
+      }
 
-      let svg = select(this.selection)
-        .append('svg')
-        .attr('width', chartWidth)
-        .attr('height', chartHeight);
+      //获取svg的高度和宽度
+      let chartWidth = this.svg.attr('width');
+      let chartHeight = this.svg.attr('height');
 
       yScale
-        //将二维数组转换为一维数组，也就是求出全部数据的最大值和最小值
+        //将二维数组转换为一维数组，然后求出全部数据的最大值和最小值
         .domain(extent([].concat.apply([], yValue)))
         .range([chartHeight, 0])
         .nice();
 
       xScale
-        //求二维数组中长度最长的数据
+        //求二维数组中长度最长数组长度
         .domain(range(max(yValue, d => d.length)))
         .range([0, chartWidth]);
 
@@ -56,7 +56,7 @@ const BarChart = (() => {
         .range([0, xScale.bandwidth()])
         .paddingOuter(0.2);
 
-      svg
+      this.svg
         .append('g')
         .selectAll('g')
         .data(yValue)
