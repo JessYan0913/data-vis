@@ -75,6 +75,7 @@ const BarChart = (() => {
         .append('rect')
         .attr('width', xGroupScale.bandwidth())
         .attr('height', function(d, i) {
+          //TODO: 高度计算存在问题，需要调整
           return yScale(d);
         })
         .attr('x', function(d, i) {
