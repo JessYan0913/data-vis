@@ -16,6 +16,7 @@ const BarChart = (() => {
   let yScale = scaleLinear();
   let xValue = [];
   let yValue = [];
+  let colors = schemeCategory10;
 
   class BarChart extends Chart {
     constructor(selection) {
@@ -62,7 +63,7 @@ const BarChart = (() => {
         .enter()
         .append('g')
         .style('fill', function(d, i) {
-          return schemeCategory10[i];
+          return colors[Math.min(i, colors.length - 1)];
         })
         .attr('transform', function(d, i) {
           return 'translate(' + xGroupScale(i) + ',0)';
@@ -75,15 +76,14 @@ const BarChart = (() => {
         .append('rect')
         .attr('width', xGroupScale.bandwidth())
         .attr('height', function(d, i) {
-          //TODO: 高度计算存在问题，需要调整
-          return yScale(d);
+          return chartHeight - yScale(d);
         })
         .attr('x', function(d, i) {
           console.log(xScale(i));
           return xScale(i);
         })
         .attr('y', function(d) {
-          return chartHeight - yScale(d);
+          return yScale(d);
         });
     }
 
@@ -96,6 +96,12 @@ const BarChart = (() => {
     y(_) {
       if (!arguments.length) return y;
       y = _;
+      return this;
+    }
+
+    colors(_) {
+      if (!arguments.length) return colors;
+      colors = _;
       return this;
     }
   }
