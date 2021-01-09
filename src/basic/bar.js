@@ -4,10 +4,12 @@ import {
   extent,
   schemeCategory10,
   range,
-  max
+  max,
+  select
 } from 'd3';
 import { dimensionArray } from '../utils/array-util';
 import Chart from './chart';
+import style from './style.css';
 
 const BarChart = (() => {
   let x = d => d[0];
@@ -17,6 +19,7 @@ const BarChart = (() => {
   let xValue = [];
   let yValue = [];
   let colors = schemeCategory10;
+  let tooltip = d => `<div>${d}</div>`;
 
   class BarChart extends Chart {
     constructor(selection) {
@@ -56,6 +59,10 @@ const BarChart = (() => {
         .range([0, xScale.bandwidth()])
         .paddingOuter(0.2);
 
+      let body = select(this.selection)
+        .append('div')
+        .attr('class', 'tooltip');
+
       this.svg
         .append('g')
         .selectAll('g')
@@ -83,6 +90,16 @@ const BarChart = (() => {
         })
         .attr('y', function(d) {
           return yScale(d);
+        })
+        .on('mouseover', function(event, d) {
+          body
+            .html(tooltip(d))
+            .style('left', event.pageX + 'px')
+            .style('top', event.pageY + 20 + 'px')
+            .style('opacity', 1.0);
+        })
+        .on('mouseout', function(event, d) {
+          body.style('opacity', 0.0);
         });
     }
 
@@ -101,6 +118,12 @@ const BarChart = (() => {
     colors(_) {
       if (!arguments.length) return colors;
       colors = _;
+      return this;
+    }
+
+    tooltip(_) {
+      if (!arguments.length) return tooltip;
+      tooltip = _;
       return this;
     }
   }
