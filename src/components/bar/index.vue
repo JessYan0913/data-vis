@@ -13,6 +13,13 @@ let data = [
   [33, 23, 10, 13]
 ];
 
+let data1 = [
+  {id: 1, name: 'a', value: 32},
+  {id: 2, name: 'b', value: 25},
+  {id: 3, name: 'c', value: 67},
+  {id: 4, name: 'd', value: 2},
+];
+
 export default {
   mounted() {
     let chart = new BarChart('#div');

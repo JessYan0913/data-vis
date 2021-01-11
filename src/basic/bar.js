@@ -12,12 +12,8 @@ import Chart from './chart';
 import style from './style.css';
 
 const BarChart = (() => {
-  let x = d => d[0];
-  let y = d => d;
   let xScale = scaleBand();
   let yScale = scaleLinear();
-  let xValue = [];
-  let yValue = [];
   let colors = schemeCategory10;
   let tooltip = d => `<div>${d}</div>`;
 
@@ -28,16 +24,6 @@ const BarChart = (() => {
 
     draw() {
       let data = this.data();
-      data.forEach((item, index) => {
-        xValue.push(x.call(data, item, index));
-        yValue.push(y.call(data, item, index));
-      });
-
-      //判断数组维度，如果是一维数组，则一维数组变成二维数组
-      let yValueDimension = dimensionArray(yValue);
-      if (yValueDimension == 1) {
-        yValue = [yValue];
-      }
 
       //获取svg的高度和宽度
       let chartWidth = this.svg.attr('width');
@@ -45,17 +31,17 @@ const BarChart = (() => {
 
       yScale
         //将二维数组转换为一维数组，然后求出全部数据的最大值和最小值
-        .domain(extent([].concat.apply([], yValue)))
+        .domain(extent([].concat.apply([], data)))
         .range([chartHeight, 0])
         .nice();
 
       xScale
         //求二维数组中长度最长数组长度
-        .domain(range(max(yValue, d => d.length)))
+        .domain(range(max(data, d => d.length)))
         .range([0, chartWidth]);
 
       let xGroupScale = scaleBand()
-        .domain(range(yValue.length))
+        .domain(range(data.length))
         .range([0, xScale.bandwidth()])
         .paddingOuter(0.2);
 
@@ -66,7 +52,7 @@ const BarChart = (() => {
       this.svg
         .append('g')
         .selectAll('g')
-        .data(yValue)
+        .data(data)
         .enter()
         .append('g')
         .style('fill', function(d, i) {
@@ -101,18 +87,6 @@ const BarChart = (() => {
         .on('mouseout', function(event, d) {
           body.style('opacity', 0.0);
         });
-    }
-
-    x(_) {
-      if (!arguments.length) return x;
-      x = _;
-      return this;
-    }
-
-    y(_) {
-      if (!arguments.length) return y;
-      y = _;
-      return this;
     }
 
     colors(_) {
