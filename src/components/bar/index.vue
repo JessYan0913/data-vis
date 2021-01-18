@@ -3,32 +3,30 @@
 </template>
 
 <script>
-import BarChart from '../../basic/bar';
+import BarChart from '../../basic/chart/bar';
+import { getFields } from '../../utils/array-util';
 
 let data = [
   [1, 20, 50, 4, 4],
   [2, 1, 23, 11, 23],
-  [3, 3, 30, 13],
+  [3, 3, 30, 13, 0],
   [30, 3, 30, 33, 7],
-  [33, 23, 10, 13]
-];
-
-let data1 = [
-  {id: 1, name: 'a', value: 32},
-  {id: 2, name: 'b', value: 25},
-  {id: 3, name: 'c', value: 67},
-  {id: 4, name: 'd', value: 2},
+  [33, 23, 10, 13, 0]
 ];
 
 export default {
   mounted() {
-    let chart = new BarChart('#div');
-    chart
-      .width(600)
-      .height(600)
-      .data(data)
-      .tooltip(d => `<div>数据:${d}</div>`)
-      .draw();
+    let chart = new BarChart({
+      element: '#div'
+    });
+    console.log(chart);
+    chart.width(600);
+    chart.height(600);
+    chart.data(data);
+    chart.tooltip(d => {
+      return `<div>数据:${d}</div>`;
+    });
+    chart.draw();
   }
 };
 </script>

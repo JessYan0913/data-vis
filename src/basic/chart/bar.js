@@ -5,9 +5,10 @@ import {
   schemeCategory10,
   range,
   max,
-  select
+  select,
+  axisBottom,
+  axisLeft
 } from 'd3';
-import { dimensionArray } from '../utils/array-util';
 import Chart from './chart';
 import style from './style.css';
 
@@ -15,11 +16,11 @@ const BarChart = (() => {
   let xScale = scaleBand();
   let yScale = scaleLinear();
   let colors = schemeCategory10;
-  let tooltip = d => `<div>${d}</div>`;
+  let yMax = NaN;
 
   class BarChart extends Chart {
-    constructor(selection) {
-      super(selection);
+    constructor(obj) {
+      super(obj);
     }
 
     draw() {
@@ -27,30 +28,50 @@ const BarChart = (() => {
 
       //获取svg的高度和宽度
       let chartWidth = this.svg.attr('width');
-      let chartHeight = this.svg.attr('height');
+      let chartHeight = this.svg.attr('height') - 20;
 
       yScale
         //将二维数组转换为一维数组，然后求出全部数据的最大值和最小值
-        .domain(extent([].concat.apply([], data)))
+        .domain(yMax ? [0, yMax] : extent([].concat.apply([], data)))
         .range([chartHeight, 0])
         .nice();
 
       xScale
         //求二维数组中长度最长数组长度
         .domain(range(max(data, d => d.length)))
-        .range([0, chartWidth]);
+        .range([20, chartWidth]);
 
       let xGroupScale = scaleBand()
         .domain(range(data.length))
         .range([0, xScale.bandwidth()])
         .paddingOuter(0.2);
 
-      let body = select(this.selection)
+      let tooltipContainer = select(this.element)
         .append('div')
         .attr('class', 'tooltip');
 
+      let tooltip = this.tooltip();
+
+      //x轴的比例尺
+      var xAxis = axisBottom().scale(xScale);
+      //y轴比例尺
+      var yAxis = axisLeft().scale(yScale);
+
       this.svg
         .append('g')
+        .attr('transform', 'translate(20, 0)')
+        .call(yAxis);
+      //
+      //添加一个x周到分组标签
+      this.svg
+        .append('g')
+        .attr('class', 'x axis')
+        .attr('transform', 'translate(0,' + chartHeight + ')')
+        .call(xAxis);
+
+      this.svg
+        .append('g')
+        .style('fill', 'red')
         .selectAll('g')
         .data(data)
         .enter()
@@ -78,26 +99,30 @@ const BarChart = (() => {
           return yScale(d);
         })
         .on('mouseover', function(event, d) {
-          body
+          tooltipContainer
             .html(tooltip(d))
             .style('left', event.pageX + 'px')
             .style('top', event.pageY + 20 + 'px')
             .style('opacity', 1.0);
         })
         .on('mouseout', function(event, d) {
-          body.style('opacity', 0.0);
+          tooltipContainer.style('opacity', 0.0);
         });
     }
 
     colors(_) {
-      if (!arguments.length) return colors;
+      if (!arguments.length) {
+        return colors;
+      }
       colors = _;
       return this;
     }
 
-    tooltip(_) {
-      if (!arguments.length) return tooltip;
-      tooltip = _;
+    yMax(_) {
+      if (!arguments.length) {
+        return yMax;
+      }
+      yMax = +_;
       return this;
     }
   }
