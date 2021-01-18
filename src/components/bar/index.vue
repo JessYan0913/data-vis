@@ -5,6 +5,7 @@
 <script>
 import BarChart from '../../basic/chart/bar';
 import { getFields } from '../../utils/array-util';
+import { AxisOrientation } from '../../basic/enums';
 
 let data = [
   [1, 20, 50, 4, 4],

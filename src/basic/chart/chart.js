@@ -1,4 +1,5 @@
 import { select } from 'd3';
+import { AxisOrientation } from '../enums';
 
 const Chart = (() => {
   let data = [];
@@ -6,8 +7,8 @@ const Chart = (() => {
   let height = 500;
   let margin = { top: 20, right: 20, bottom: 20, left: 20 };
   let tooltip = d => `<div>${d}</div>`;
-  let xAxis = {};
-  let yAxis = {};
+  let xAxis = AxisOrientation.LEFT;
+  let yAxis = AxisOrientation.BOTTOM;
 
   class Chart {
     constructor(obj) {

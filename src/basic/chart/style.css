@@ -10,19 +10,3 @@
   background-color: rgba(8, 8, 8, 0.6);
   border-radius: 5px;
 }
-
-.axis text {
-  font: 10px sans-serif;
-}
-
-.axis path,
-.axis line {
-  fill: none;
-  stroke: #000;
-  shape-rendering: crispEdges;
-}
-
-/*将x轴的坐标的横线隐藏*/
-.x.axis path {
-  display: none;
-}

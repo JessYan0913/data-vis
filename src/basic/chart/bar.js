@@ -57,15 +57,15 @@ const BarChart = (() => {
       //y轴比例尺
       var yAxis = axisLeft().scale(yScale);
 
+      //添加一个y轴到分组标签
       this.svg
         .append('g')
         .attr('transform', 'translate(20, 0)')
         .call(yAxis);
-      //
-      //添加一个x周到分组标签
+      
+      //添加一个x轴到分组标签
       this.svg
         .append('g')
-        .attr('class', 'x axis')
         .attr('transform', 'translate(0,' + chartHeight + ')')
         .call(xAxis);
 
