@@ -29,7 +29,8 @@ const Chart = (() => {
         return width;
       }
       width = +_;
-      this.svg.attr('width', width - margin.left - margin.right);
+      this.svg.attr('width', width);
+      this.innerWidth = width - margin?.left - margin?.right;
       return this;
     }
 
@@ -38,7 +39,8 @@ const Chart = (() => {
         return height;
       }
       height = +_;
-      this.svg.attr('height', height - margin.top - margin.bottom);
+      this.svg.attr('height', height);
+      this.innerHeight = height - margin?.top - margin?.bottom;
       return this;
     }
 
@@ -47,9 +49,8 @@ const Chart = (() => {
         return margin;
       }
       margin = _;
-      this.svg
-        .attr('width', width - margin.left - margin.right)
-        .attr('height', height - margin.top - margin.bottom);
+      this.innerHeight = height - margin?.top - margin?.bottom;
+      this.innerWidth = width - margin?.left - margin?.right;
       return this;
     }
 

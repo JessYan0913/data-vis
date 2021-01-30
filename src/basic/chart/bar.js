@@ -26,20 +26,16 @@ const BarChart = (() => {
     draw() {
       let data = this.data();
 
-      //获取svg的高度和宽度
-      let chartWidth = this.svg.attr('width');
-      let chartHeight = this.svg.attr('height') - 20;
-
       yScale
         //将二维数组转换为一维数组，然后求出全部数据的最大值和最小值
         .domain(yMax ? [0, yMax] : extent([].concat.apply([], data)))
-        .range([chartHeight, 0])
+        .range([this.innerHeight, 0])
         .nice();
 
       xScale
         //求二维数组中长度最长数组长度
         .domain(range(max(data, d => d.length)))
-        .range([20, chartWidth]);
+        .range([20, this.innerWidth]);
 
       let xGroupScale = scaleBand()
         .domain(range(data.length))
@@ -62,11 +58,11 @@ const BarChart = (() => {
         .append('g')
         .attr('transform', 'translate(20, 0)')
         .call(yAxis);
-      
+
       //添加一个x轴到分组标签
       this.svg
         .append('g')
-        .attr('transform', 'translate(0,' + chartHeight + ')')
+        .attr('transform', 'translate(0,' + this.innerHeight + ')')
         .call(xAxis);
 
       this.svg
@@ -90,7 +86,7 @@ const BarChart = (() => {
         .append('rect')
         .attr('width', xGroupScale.bandwidth())
         .attr('height', function(d, i) {
-          return chartHeight - yScale(d);
+          return this.innerHeight - yScale(d);
         })
         .attr('x', function(d, i) {
           return xScale(i);

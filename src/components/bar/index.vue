@@ -3,31 +3,44 @@
 </template>
 
 <script>
-import BarChart from '../../basic/chart/bar';
+import Column from '../../basic/column';
 import { getFields } from '../../utils/array-util';
 import { AxisOrientation } from '../../basic/enums';
 
-let data = [
-  [1, 20, 50, 4, 4],
-  [2, 1, 23, 11, 23],
-  [3, 3, 30, 13, 0],
-  [30, 3, 30, 33, 7],
-  [33, 23, 10, 13, 0]
+const data = [
+  {
+    type: '家具家电',
+    sales: 38
+  },
+  {
+    type: '粮油副食',
+    sales: 52
+  },
+  {
+    type: '生鲜水果',
+    sales: 61
+  },
+  {
+    type: '美容洗护',
+    sales: 145
+  },
+  {
+    type: '母婴用品',
+    sales: 48
+  }
 ];
 
 export default {
   mounted() {
-    let chart = new BarChart({
-      element: '#div'
+    const column = new Column({
+      container: '#div',
+      data,
+      xField: 'type',
+      yField: 'sales',
+      width: 800,
+      height: 600
     });
-    console.log(chart);
-    chart.width(600);
-    chart.height(600);
-    chart.data(data);
-    chart.tooltip(d => {
-      return `<div>数据:${d}</div>`;
-    });
-    chart.draw();
+    column.render();
   }
 };
 </script>
