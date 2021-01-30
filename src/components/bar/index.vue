@@ -4,13 +4,11 @@
 
 <script>
 import Column from '../../basic/column';
-import { getFields } from '../../utils/array-util';
-import { AxisOrientation } from '../../basic/enums';
 
 const data = [
   {
     type: '家具家电',
-    sales: 38
+    sales: -38
   },
   {
     type: '粮油副食',
