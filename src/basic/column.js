@@ -32,9 +32,9 @@ export default class Column extends Chart {
       .attr('x', datum => this.xScale(this.xValue(datum)))
       .attr('y', datum => this.yScale(Math.max(0, this.yValue(datum))))
       .attr('width', this.xScale.bandwidth())
-      .attr('height', datum => {
-        return Math.abs(this.yScale(this.yValue(datum)) - this.yScale(0));
-      })
+      .attr('height', datum =>
+        Math.abs(this.yScale(this.yValue(datum)) - this.yScale(0))
+      )
       .attr('fill', () => {
         if (this.color instanceof Array) {
           return this.color[0];
