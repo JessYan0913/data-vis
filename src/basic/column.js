@@ -1,4 +1,12 @@
-import { max, min, scaleBand, scaleLinear, schemeCategory10 } from 'd3';
+import {
+  max,
+  min,
+  scaleBand,
+  scaleLinear,
+  schemeCategory10,
+  axisLeft,
+  axisRight
+} from 'd3';
 import Chart from './chart';
 
 export default class Column extends Chart {
@@ -10,7 +18,8 @@ export default class Column extends Chart {
 
     this.yScale = scaleLinear()
       .domain([min(data, this.yValue), max(data, this.yValue)])
-      .range([this.innerHeight, 0]);
+      .range([this.innerHeight, 0])
+      .nice();
 
     this.xScale = scaleBand()
       .domain(data.map(this.xValue))
@@ -24,6 +33,16 @@ export default class Column extends Chart {
     const g = this.svg
       .append('g')
       .attr('transform', `translate(${this.margin.left}, ${this.margin.top})`);
+
+    g.append('g').call(axisRight(this.yScale).tickSize(innerWidth));
+    let s = g.selection();
+    s.select('.domain').remove();
+    s.selectAll('.tick line')
+      .filter(Number)
+      .attr('stroke', '#777');
+    s.selectAll('.tick text')
+      .attr('x', 4)
+      .attr('dy', -4);
 
     g.selectAll('rect')
       .data(this.data)

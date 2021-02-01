@@ -7,7 +7,7 @@ export default class Chart {
       data,
       width,
       height,
-      margin = { top: 20, left: 20, bottom: 20, right: 20 }
+      margin = { top: 30, left: 30, bottom: 30, right: 30 }
     } = props;
 
     this.svg = select(container)
