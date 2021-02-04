@@ -35,6 +35,7 @@ export default {
       data,
       label: {
         position: 'top',
+        content: 'dddddd',
         style: {
           fill: 'red',
           fontSize: 16

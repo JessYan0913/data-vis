@@ -10,9 +10,10 @@ export const LabelPosition = {
 
 export class Label {
   constructor(props) {
-    const { style, position } = props;
+    const { style, position, content } = props;
     this.position = LabelPosition[position];
     this.style = style;
+    this.content = content;
   }
 
   render(selection, x, y, text) {
@@ -24,7 +25,7 @@ export class Label {
     }
     textGroup.attr('x', datum => x(datum));
     textGroup.attr('y', datum => y(datum));
-    textGroup.text(datum => text(datum));
+    textGroup.text(datum => (this.content ? this.content : text(datum)));
     return textGroup;
   }
 }

@@ -79,7 +79,7 @@ export default class Column extends Chart {
       });
 
     //generate column label
-    this.label.render(
+    this.label?.render(
       columnGroup,
       datum => this.xScale(this.xValue(datum)) + this.xScale.bandwidth() / 2,
       datum => this.yScale(this.yValue(datum)) - 10,

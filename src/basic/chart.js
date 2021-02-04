@@ -21,7 +21,7 @@ export default class Chart {
     this.innerHeight = height - margin.top - margin.bottom;
     this.title = title;
     this.data = data;
-    this.label = new Label({ ...label });
+    this.label = label ? new Label({ ...label }) : undefined;
     this.margin = margin;
   }
 }
