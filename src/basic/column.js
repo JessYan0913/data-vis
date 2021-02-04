@@ -38,7 +38,7 @@ export default class Column extends Chart {
     chartGroup
       .append('g')
       .call(axisRight(this.yScale).tickSize(this.innerWidth));
-    console.log(chartGroup.selection());
+
     const yAxisGroup = chartGroup.selection();
     yAxisGroup.select('.domain').remove();
     yAxisGroup
@@ -56,10 +56,14 @@ export default class Column extends Chart {
       .call(axisBottom(this.xScale))
       .attr('transform', `translate(${0}, ${this.innerHeight})`);
 
-    chartGroup
+    //generate column
+    const columnGroup = chartGroup
       .selectAll('rect')
       .data(this.data)
       .enter()
+      .append('g');
+
+    columnGroup
       .append('rect')
       .attr('x', datum => this.xScale(this.xValue(datum)))
       .attr('y', datum => this.yScale(Math.max(0, this.yValue(datum))))
@@ -73,5 +77,13 @@ export default class Column extends Chart {
         }
         return this.color;
       });
+
+    //generate column label
+    this.label.render(
+      columnGroup,
+      datum => this.xScale(this.xValue(datum)) + this.xScale.bandwidth() / 2,
+      datum => this.yScale(this.yValue(datum)) - 10,
+      datum => this.yValue(datum)
+    );
   }
 }

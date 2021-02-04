@@ -33,6 +33,13 @@ export default {
     const column = new Column({
       container: '#div',
       data,
+      label: {
+        position: 'top',
+        style: {
+          fill: 'red',
+          fontSize: 16
+        }
+      },
       xField: 'type',
       yField: 'sales',
       width: 800,
