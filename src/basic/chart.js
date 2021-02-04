@@ -4,6 +4,7 @@ export default class Chart {
   constructor(props) {
     const {
       container,
+      title,
       data,
       width,
       height,
@@ -16,6 +17,7 @@ export default class Chart {
       .attr('height', height);
     this.innerWidth = width - margin.left - margin.right;
     this.innerHeight = height - margin.top - margin.bottom;
+    this.title = title;
     this.data = data;
     this.margin = margin;
   }

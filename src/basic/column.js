@@ -4,8 +4,8 @@ import {
   scaleBand,
   scaleLinear,
   schemeCategory10,
-  axisLeft,
-  axisRight
+  axisRight,
+  axisBottom
 } from 'd3';
 import Chart from './chart';
 
@@ -30,21 +30,34 @@ export default class Column extends Chart {
   }
 
   render() {
-    const g = this.svg
+    const chartGroup = this.svg
       .append('g')
       .attr('transform', `translate(${this.margin.left}, ${this.margin.top})`);
 
-    g.append('g').call(axisRight(this.yScale).tickSize(innerWidth));
-    let s = g.selection();
-    s.select('.domain').remove();
-    s.selectAll('.tick line')
+    //generate yAxis
+    chartGroup
+      .append('g')
+      .call(axisRight(this.yScale).tickSize(this.innerWidth));
+    console.log(chartGroup.selection());
+    const yAxisGroup = chartGroup.selection();
+    yAxisGroup.select('.domain').remove();
+    yAxisGroup
+      .selectAll('.tick line')
       .filter(Number)
       .attr('stroke', '#777');
-    s.selectAll('.tick text')
+    yAxisGroup
+      .selectAll('.tick text')
       .attr('x', 4)
       .attr('dy', -4);
 
-    g.selectAll('rect')
+    //generate xAxis
+    chartGroup
+      .append('g')
+      .call(axisBottom(this.xScale))
+      .attr('transform', `translate(${0}, ${this.innerHeight})`);
+
+    chartGroup
+      .selectAll('rect')
       .data(this.data)
       .enter()
       .append('rect')
