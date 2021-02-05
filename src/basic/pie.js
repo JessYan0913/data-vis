@@ -43,7 +43,7 @@ export default class Pie extends Chart {
     }
     this.radius = (radius * minSize) / 2;
 
-    this.arc = arc()
+    this.arcPath = arc()
       .innerRadius(this.innerRadius)
       .outerRadius(this.radius)
       .cornerRadius(cornerRadius);
@@ -75,7 +75,7 @@ export default class Pie extends Chart {
       .data(this.pieData)
       .enter()
       .append('path')
-      .attr('d', this.arc)
+      .attr('d', this.arcPath)
       .attr('fill', datum => this.colorScale(datum.index));
 
     //generate label

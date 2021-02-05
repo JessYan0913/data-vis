@@ -2,18 +2,21 @@
   <div id="app">
     <column />
     <pie />
+    <line-chart />
   </div>
 </template>
 
 <script>
 import Column from './example/column';
 import Pie from './example/pie';
+import LineChart from './example/line';
 
 export default {
   name: 'App',
   components: {
     Column,
-    Pie
+    Pie,
+    LineChart
   }
 };
 </script>
