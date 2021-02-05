@@ -1,38 +1,64 @@
+import { isFunction } from '../../utils/function-util';
 import { camelToLineConverter } from '../../utils/string-util';
 
-export const ColumnLabelPosition = {
+const ColumnLabelPosition = {
   top: (datum, width, height, x, y) => ({
-    x: x(datum) + width(datum) / 2,
-    y: y(datum) - 5
+    x: isFunction(x)
+      ? x(datum) + (isFunction(width) ? width(datum) : +width) / 2
+      : +x,
+    y: isFunction(y) ? y(datum) - 5 : +y
   }),
   left: (datum, width, height, x, y) => ({
-    x: x(datum) + 10,
-    y: y(datum) - height(datum) / 2
+    x: isFunction(x) ? x(datum) + 10 : +x,
+    y: isFunction(y)
+      ? y(datum) - (isFunction(height) ? height(datum) : +height) / 2
+      : +y
   }),
   middle: (datum, width, height, x, y) => ({
-    x: x(datum) + width(datum) / 2,
-    y: y(datum) - height(datum) / 2
+    x: isFunction(x)
+      ? x(datum) + (isFunction(width) ? width(datum) : +width) / 2
+      : +x,
+    y: isFunction(y)
+      ? y(datum) - (isFunction(height) ? height(datum) : +height) / 2
+      : +y
   }),
   right: (datum, width, height, x, y) => ({
-    x: x(datum) + width(datum) + 10,
-    y: y(datum) - height(datum) / 2
+    x: isFunction(x)
+      ? x(datum) + (isFunction(width) ? width(datum) : +width) + 10
+      : +x,
+    y: isFunction(y)
+      ? y(datum) - (isFunction(height) ? height(datum) : +height) / 2
+      : +y
   }),
   bottom: (datum, width, height, x, y) => ({
-    x: x(datum) + width(datum) / 2,
-    y: y(datum) - height(datum)
+    x: isFunction(x)
+      ? x(datum) + (isFunction(width) ? width(datum) : +width) / 2
+      : +x,
+    y: isFunction(y)
+      ? y(datum) - (isFunction(height) ? height(datum) : +height)
+      : +y
   })
+};
+
+const PieLabelPosition = {
+  inner,
+  outer
+};
+
+export const LabelPositionType = {
+  ColumnLabelPosition,
+  PieLabelPosition
 };
 
 export class Label {
   constructor(props) {
     const { style, position, content } = props;
-    this.position =
-      ColumnLabelPosition[position] === undefined ? 'top' : position;
+    this.position = position;
     this.style = style;
     this.content = content;
   }
 
-  render(selection, width, height, x, y, text) {
+  render({ type, selection, width, height, x, y, text }) {
     const textGroup = selection.append('text');
     for (const item in this.style) {
       if (Object.hasOwnProperty.call(this.style, item)) {
@@ -41,11 +67,11 @@ export class Label {
     }
     textGroup.attr(
       'x',
-      datum => ColumnLabelPosition[this.position](datum, width, height, x, y).x
+      datum => type[this.position](datum, width, height, x, y).x
     );
     textGroup.attr(
       'y',
-      datum => ColumnLabelPosition[this.position](datum, width, height, x, y).y
+      datum => type[this.position](datum, width, height, x, y).y
     );
 
     textGroup.attr('text-anchor', 'middle');

@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <!-- <bar-chart /> -->
+    <bar-chart />
     <pie-chart />
   </div>
 </template>
@@ -12,7 +12,7 @@ import PieChart from './example/pie';
 export default {
   name: 'App',
   components: {
-    // BarChart,
+    BarChart,
     PieChart
   }
 };

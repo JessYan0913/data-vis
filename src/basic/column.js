@@ -8,6 +8,7 @@ import {
   axisBottom
 } from 'd3';
 import Chart from './chart';
+import { LabelPositionType } from './components/label';
 
 export default class Column extends Chart {
   constructor(props) {
@@ -79,13 +80,14 @@ export default class Column extends Chart {
       });
 
     //generate column label
-    this.label?.render(
-      columnGroup,
-      () => this.xScale.bandwidth(),
-      datum => this.yScale(this.yValue(datum)) - this.yScale(0),
-      datum => this.xScale(this.xValue(datum)),
-      datum => this.yScale(this.yValue(datum)),
-      datum => this.yValue(datum)
-    );
+    this.label?.render({
+      type: LabelPositionType.ColumnLabelPosition,
+      selection: columnGroup,
+      width: () => this.xScale.bandwidth(),
+      height: datum => this.yScale(this.yValue(datum)) - this.yScale(0),
+      x: datum => this.xScale(this.xValue(datum)),
+      y: datum => this.yScale(this.yValue(datum)),
+      text: datum => this.yValue(datum)
+    });
   }
 }
