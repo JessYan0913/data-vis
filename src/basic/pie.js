@@ -66,6 +66,9 @@ export default class Pie extends Chart {
           this.innerHeight / 2})`
       );
 
+    //generate statistic
+    this.statistic?.render({ selection: chartGroup });
+
     //generate pie chart
     chartGroup
       .selectAll('path')
@@ -89,8 +92,5 @@ export default class Pie extends Chart {
       innerRadius: this.innerRadius,
       text: datum => this.angleValue(datum.data)
     });
-
-    //generate statistic
-    this.statistic?.render({ selection: chartGroup });
   }
 }

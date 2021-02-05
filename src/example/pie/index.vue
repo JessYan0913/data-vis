@@ -64,7 +64,7 @@ export default {
       angleField: 'sales',
       colorField: 'type',
       radius: 0.9,
-      innerRadius: 0.5,
+      innerRadius: 0,
       width: 800,
       height: 600
     });
