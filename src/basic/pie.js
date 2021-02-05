@@ -1,6 +1,7 @@
-import { arc, min, pie, scaleOrdinal, schemeCategory10 } from 'd3';
+import { arc, pie, scaleOrdinal, schemePaired } from 'd3';
 import Chart from './chart';
 import { LabelPositionType } from './components/label';
+import { Statistic } from './components/statistic';
 
 export default class Pie extends Chart {
   constructor(props) {
@@ -13,7 +14,8 @@ export default class Pie extends Chart {
       radius = 0.8,
       cornerRadius = 0,
       appendPadding = 0,
-      color = schemeCategory10
+      color = schemePaired,
+      statistic
     } = props;
 
     this.colorValue = item => item[colorField];
@@ -25,6 +27,7 @@ export default class Pie extends Chart {
 
     const minSize = Math.min(this.innerWidth, this.innerHeight);
 
+    //calculate innerRadius
     if (innerRadius < 0) {
       innerRadius = 0;
     } else if (innerRadius > 1) {
@@ -32,6 +35,7 @@ export default class Pie extends Chart {
     }
     this.innerRadius = (innerRadius * minSize) / 2;
 
+    //calculate radius
     if (radius < 0) {
       radius = 0;
     } else if (radius > 1) {
@@ -49,6 +53,7 @@ export default class Pie extends Chart {
     );
 
     this.color = color;
+    this.statistic = new Statistic({ ...statistic });
   }
 
   render() {
@@ -61,6 +66,7 @@ export default class Pie extends Chart {
           this.innerHeight / 2})`
       );
 
+    //generate pie chart
     chartGroup
       .selectAll('path')
       .data(this.pieData)
@@ -69,6 +75,7 @@ export default class Pie extends Chart {
       .attr('d', this.arc)
       .attr('fill', datum => this.colorScale(datum.index));
 
+    //generate label
     const labelGroup = chartGroup
       .selectAll('g')
       .data(this.pieData)
@@ -82,5 +89,8 @@ export default class Pie extends Chart {
       innerRadius: this.innerRadius,
       text: datum => this.angleValue(datum.data)
     });
+
+    //generate statistic
+    this.statistic?.render({ selection: chartGroup });
   }
 }

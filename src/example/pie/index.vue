@@ -8,7 +8,7 @@ import Pie from '../../basic/pie';
 const data = [
   {
     type: '家具家电',
-    sales: -38
+    sales: 38
   },
   {
     type: '粮油副食',
@@ -40,7 +40,26 @@ export default {
           fill: '#000',
           fontSize: 16
         },
-        formatter: (datum, index) => `${data[index].type} ${data[index].sales}`
+        formatter: (datum, index) =>
+          `${data[index].type} ${data[index].sales} $`
+      },
+      statistic: {
+        title: {
+          style: {
+            fill: '#000',
+            fontSize: 18
+          },
+          formatter: () => '统计'
+        },
+        content: {
+          style: {
+            fill: '#000',
+            fontSize: 20
+          },
+          formatter: () => {
+            return `${data.reduce((prev, cur) => cur.sales + prev, 0)} $`;
+          }
+        }
       },
       angleField: 'sales',
       colorField: 'type',

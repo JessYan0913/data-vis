@@ -36,7 +36,7 @@ export default {
       label: {
         position: 'bottom',
         style: {
-          fill: '#fff',
+          fill: '#c02c38',
           fontSize: 16
         },
         formatter: datum => `类型：${datum.type}`
