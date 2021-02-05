@@ -36,9 +36,10 @@ export default {
       label: {
         position: 'bottom',
         style: {
-          fill: 'red',
+          fill: '#fff',
           fontSize: 16
-        }
+        },
+        formatter: datum => `类型：${datum.type}`
       },
       xField: 'type',
       yField: 'sales',

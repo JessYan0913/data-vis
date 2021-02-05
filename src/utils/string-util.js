@@ -1,3 +1,7 @@
+export function isString(fn) {
+  return Object.prototype.toString.call(fn) === '[object String]';
+}
+
 export function smallCamelConverter(str, suffix = '') {
   if (!str) return '';
   return (

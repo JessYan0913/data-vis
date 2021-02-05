@@ -33,12 +33,14 @@ export default {
     const pie = new Pie({
       container: '#div',
       data,
+      appendPadding: 0.001,
       label: {
-        position: 'top',
+        position: 'outer',
         style: {
-          fill: 'red',
+          fill: '#000',
           fontSize: 16
-        }
+        },
+        formatter: (datum, index) => `${data[index].type} ${data[index].sales}`
       },
       angleField: 'sales',
       colorField: 'type',

@@ -1,5 +1,6 @@
 import { arc, min, pie, scaleOrdinal, schemeCategory10 } from 'd3';
 import Chart from './chart';
+import { LabelPositionType } from './components/label';
 
 export default class Pie extends Chart {
   constructor(props) {
@@ -11,13 +12,16 @@ export default class Pie extends Chart {
       innerRadius = 0,
       radius = 0.8,
       cornerRadius = 0,
+      appendPadding = 0,
       color = schemeCategory10
     } = props;
 
     this.colorValue = item => item[colorField];
     this.angleValue = item => item[angleField];
 
-    this.pie = pie().value(d => this.angleValue(d))(data);
+    this.pieData = pie()
+      .value(d => this.angleValue(d))
+      .padAngle(appendPadding)(data);
 
     const minSize = Math.min(this.innerWidth, this.innerHeight);
 
@@ -40,7 +44,9 @@ export default class Pie extends Chart {
       .outerRadius(this.radius)
       .cornerRadius(cornerRadius);
 
-    this.colorScale = scaleOrdinal(color).domain(this.pie.map(d => d.index));
+    this.colorScale = scaleOrdinal(color).domain(
+      this.pieData.map(d => d.index)
+    );
 
     this.color = color;
   }
@@ -57,31 +63,24 @@ export default class Pie extends Chart {
 
     chartGroup
       .selectAll('path')
-      .data(this.pie)
+      .data(this.pieData)
       .enter()
       .append('path')
       .attr('d', this.arc)
       .attr('fill', datum => this.colorScale(datum.index));
 
-    chartGroup
-      .selectAll('text')
-      .data(this.pie)
+    const labelGroup = chartGroup
+      .selectAll('g')
+      .data(this.pieData)
       .enter()
-      .append('text')
-      .text(datum => this.angleValue(datum.data))
-      .attr('x', datum => {
-        return this.arc
-          .innerRadius(this.radius - this.innerRadius)
-          .centroid(datum)[0];
-      })
-      .attr(
-        'y',
-        datum =>
-          this.arc
-            .innerRadius(this.radius - this.innerRadius)
-            .centroid(datum)[1]
-      )
-      .attr('font-family', 'sans-serif')
-      .attr('text-anchor', 'middle');
+      .append('g');
+
+    this.label?.render({
+      type: LabelPositionType.PieLabelPosition,
+      selection: labelGroup,
+      radius: this.radius,
+      innerRadius: this.innerRadius,
+      text: datum => this.angleValue(datum.data)
+    });
   }
 }
