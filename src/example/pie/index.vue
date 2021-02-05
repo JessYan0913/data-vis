@@ -1,5 +1,5 @@
 <template>
-  <div id="div"></div>
+  <div id="pie-div"></div>
 </template>
 
 <script>
@@ -31,7 +31,7 @@ const data = [
 export default {
   mounted() {
     const pie = new Pie({
-      container: '#div',
+      container: '#pie-div',
       data,
       appendPadding: 0.001,
       label: {
@@ -40,8 +40,7 @@ export default {
           fill: '#000',
           fontSize: 16
         },
-        formatter: (datum, index) =>
-          `${data[index].type} ${data[index].sales} $`
+        formatter: (datum, index) => `${data[index].sales} ¥`
       },
       statistic: {
         title: {

@@ -70,7 +70,9 @@ export default class Column extends Chart {
       .attr('y', datum => this.yScale(Math.max(0, this.yValue(datum))))
       .attr('width', this.xScale.bandwidth())
       .attr('height', datum =>
-        Math.abs(this.yScale(this.yValue(datum)) - this.yScale(0))
+        Math.abs(
+          this.yScale(this.yValue(datum)) - this.yScale(this.margin.bottom)
+        )
       )
       .attr('fill', () => {
         if (this.color instanceof Array) {
@@ -84,7 +86,8 @@ export default class Column extends Chart {
       type: LabelPositionType.ColumnLabelPosition,
       selection: columnGroup,
       width: () => this.xScale.bandwidth(),
-      height: datum => this.yScale(this.yValue(datum)) - this.yScale(0),
+      height: datum =>
+        this.yScale(this.yValue(datum)) - this.yScale(this.margin.bottom),
       x: datum => this.xScale(this.xValue(datum)),
       y: datum => this.yScale(this.yValue(datum)),
       text: datum => this.yValue(datum)

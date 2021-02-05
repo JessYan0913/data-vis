@@ -1,5 +1,5 @@
 <template>
-  <div id="div"></div>
+  <div id="column-div"></div>
 </template>
 
 <script>
@@ -8,7 +8,7 @@ import Column from '../../basic/column';
 const data = [
   {
     type: '家具家电',
-    sales: -38
+    sales: 38
   },
   {
     type: '粮油副食',
@@ -31,15 +31,14 @@ const data = [
 export default {
   mounted() {
     const column = new Column({
-      container: '#div',
+      container: '#column-div',
       data,
       label: {
-        position: 'bottom',
+        position: 'top',
         style: {
-          fill: '#c02c38',
           fontSize: 16
         },
-        formatter: datum => `类型：${datum.type}`
+        formatter: datum => `${datum.sales} ¥`
       },
       xField: 'type',
       yField: 'sales',
