@@ -34,8 +34,7 @@ export default {
       container: '#div',
       data,
       label: {
-        position: 'top',
-        content: 'dddddd',
+        position: 'bottom',
         style: {
           fill: 'red',
           fontSize: 16
