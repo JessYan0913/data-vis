@@ -1,6 +1,6 @@
-import { camelToLineConverter } from '../utils/string-util';
+import { camelToLineConverter } from '../../utils/string-util';
 
-export const LabelPosition = {
+export const ColumnLabelPosition = {
   top: (datum, width, height, x, y) => ({
     x: x(datum) + width(datum) / 2,
     y: y(datum) - 5
@@ -26,7 +26,8 @@ export const LabelPosition = {
 export class Label {
   constructor(props) {
     const { style, position, content } = props;
-    this.position = LabelPosition[position] === undefined ? 'top' : position;
+    this.position =
+      ColumnLabelPosition[position] === undefined ? 'top' : position;
     this.style = style;
     this.content = content;
   }
@@ -40,11 +41,11 @@ export class Label {
     }
     textGroup.attr(
       'x',
-      datum => LabelPosition[this.position](datum, width, height, x, y).x
+      datum => ColumnLabelPosition[this.position](datum, width, height, x, y).x
     );
     textGroup.attr(
       'y',
-      datum => LabelPosition[this.position](datum, width, height, x, y).y
+      datum => ColumnLabelPosition[this.position](datum, width, height, x, y).y
     );
 
     textGroup.attr('text-anchor', 'middle');

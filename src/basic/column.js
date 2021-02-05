@@ -11,7 +11,7 @@ import Chart from './chart';
 
 export default class Column extends Chart {
   constructor(props) {
-    super({ ...props });
+    super(props);
     const { data, xField, yField, color = schemeCategory10 } = props;
     this.xValue = item => item[xField];
     this.yValue = item => item[yField];

@@ -1,5 +1,5 @@
 import { select } from 'd3';
-import { Label } from './component';
+import { Label } from './components/label';
 
 export default class Chart {
   constructor(props) {

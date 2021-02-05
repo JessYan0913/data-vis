@@ -1,16 +1,19 @@
 <template>
   <div id="app">
-    <bar-chart />
+    <!-- <bar-chart /> -->
+    <pie-chart />
   </div>
 </template>
 
 <script>
-import BarChart from './components/bar';
+import BarChart from './example/bar';
+import PieChart from './example/pie';
 
 export default {
   name: 'App',
   components: {
-    BarChart,
+    // BarChart,
+    PieChart
   }
 };
 </script>
