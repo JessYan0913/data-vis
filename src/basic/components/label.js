@@ -1,6 +1,7 @@
 import { arc } from 'd3';
-import { isFunction } from '../../utils/function-util';
-import { camelToLineConverter, isString } from '../../utils/string-util';
+import { parseStyle } from '../utils/data-vis-util';
+import { isFunction } from '../utils/function-util';
+import { isString } from '../utils/string-util';
 
 const ColumnLabelPosition = {
   top: ({ datum, width, x, y }) => ({
@@ -81,11 +82,7 @@ export class Label {
   render(params) {
     const { type, selection, text } = params;
     const textGroup = selection.append('text');
-    for (const item in this.style) {
-      if (Object.hasOwnProperty.call(this.style, item)) {
-        textGroup.attr(camelToLineConverter(item), this.style[item]);
-      }
-    }
+    parseStyle(textGroup, this.style);
     textGroup.attr('x', datum => type[this.position]({ datum, ...params }).x);
     textGroup.attr('y', datum => type[this.position]({ datum, ...params }).y);
     textGroup.attr('text-anchor', 'middle');

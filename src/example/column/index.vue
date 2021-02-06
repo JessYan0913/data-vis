@@ -24,7 +24,7 @@ const data = [
   },
   {
     type: '母婴用品',
-    sales: 48
+    sales: -48
   }
 ];
 
@@ -36,7 +36,8 @@ export default {
       label: {
         position: 'top',
         style: {
-          fontSize: 16
+          fontSize: 16,
+          fill: 'red'
         },
         formatter: datum => `${datum.sales} ¥`
       },

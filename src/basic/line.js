@@ -12,7 +12,9 @@ import {
   curveBasis,
   curveStep,
   curveStepAfter,
-  curveStepBefore
+  curveStepBefore,
+  symbol,
+  symbols
 } from 'd3';
 import Chart from './chart';
 
@@ -45,12 +47,11 @@ export default class Line extends Chart {
 
     this.xScale = scaleBand()
       .domain(data.map(this.xValue))
-      .range([this.margin.left, this.innerWidth])
-      .padding(0.2);
+      .range([this.margin.left, this.innerWidth]);
 
     this.linePath = line()
       .curve(curveType[lineType] ?? curveType.linear)
-      .x(d => this.xScale(this.xValue(d)))
+      .x(d => this.xScale(this.xValue(d)) + this.xScale.bandwidth() / 2)
       .y(d => this.yScale(this.yValue(d)));
 
     this.color = color;
@@ -62,6 +63,7 @@ export default class Line extends Chart {
       .attr('transform', `translate(${this.margin.left}, ${this.margin.top})`);
 
     //generate yAxis
+    //TODO: 坐标轴应该抽成组件
     chartGroup
       .append('g')
       .call(axisRight(this.yScale).tickSize(this.innerWidth));
@@ -78,18 +80,84 @@ export default class Line extends Chart {
       .attr('dy', -4);
 
     //generate xAxis
+    //TODO: 坐标轴应该抽成组件
     chartGroup
       .append('g')
       .call(axisBottom(this.xScale))
       .attr('transform', `translate(${0}, ${this.innerHeight})`);
 
+    const lineGroup = chartGroup.append('g');
+
     //generate column
-    chartGroup
-      .append('g')
+    lineGroup
       .append('path')
       .attr('d', this.linePath(this.data))
       .attr('fill', 'none')
       .attr('stroke-width', 3)
       .attr('stroke', 'green');
+
+    //generate point
+    // lineGroup
+    //   .append('g')
+    //   .selectAll('circle')
+    //   .data(this.data)
+    //   .enter()
+    //   .append('path')
+    //   .attr(
+    //     'd',
+    //     symbol()
+    //       .type(symbols[1])
+    //       .size(80)
+    //   )
+    //   .attr(
+    //     'transform',
+    //     datum =>
+    //       `translate(${this.xScale(this.xValue(datum)) +
+    //         this.xScale.bandwidth() / 2}, ${this.yScale(this.yValue(datum))})`
+    //   )
+    //   .attr('fill', 'white')
+    //   .attr('stroke', 'red');
+
+    // lineGroup
+    //   .selectAll('circle')
+    //   .data(this.data)
+    //   .enter()
+    //   .append('circle')
+    //   .attr('r', 10)
+    //   .attr(
+    //     'cx',
+    //     datum => this.xScale(this.xValue(datum)) + this.xScale.bandwidth() / 2
+    //   )
+    //   .attr('cy', datum => this.yScale(this.yValue(datum)))
+    //   .attr('fill', 'white')
+    //   .attr('stroke', 'red')
+    //   .attr('stroke-width', 3);
+
+    lineGroup
+      .append('g')
+      .selectAll('circle')
+      .data(this.data)
+      .enter()
+      .call(this.generatePoint)
+      .attr(
+        'transform',
+        datum =>
+          `translate(${this.xScale(this.xValue(datum)) +
+            this.xScale.bandwidth() / 2}, ${this.yScale(this.yValue(datum))})`
+      );
+  }
+
+  generatePoint(selection) {
+    const point = selection
+      .append('path')
+      .attr(
+        'd',
+        symbol()
+          .type(symbols[1])
+          .size(80)
+      )
+      .attr('fill', 'white')
+      .attr('stroke', 'red');
+    // return point;
   }
 }

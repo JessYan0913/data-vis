@@ -1,4 +1,4 @@
-import { camelToLineConverter } from '../../utils/string-util';
+import { camelToLineConverter } from '../utils/string-util';
 
 const statisticText = function(props) {
   const { selection, style, formatter } = props;

@@ -35,7 +35,10 @@ export default {
       data,
       xField: 'type',
       yField: 'sales',
-      lineType: 'natural',
+      lineType: 'linear',
+      point: {
+        shape: 'triangle'
+      },
       width: 800,
       height: 600
     });

@@ -36,6 +36,7 @@ export default class Column extends Chart {
       .attr('transform', `translate(${this.margin.left}, ${this.margin.top})`);
 
     //generate yAxis
+    //TODO: 坐标轴应该抽成组件
     chartGroup
       .append('g')
       .call(axisRight(this.yScale).tickSize(this.innerWidth));
@@ -52,6 +53,7 @@ export default class Column extends Chart {
       .attr('dy', -4);
 
     //generate xAxis
+    //TODO: 坐标轴应该抽成组件
     chartGroup
       .append('g')
       .call(axisBottom(this.xScale))
@@ -70,8 +72,10 @@ export default class Column extends Chart {
       .attr('y', datum => this.yScale(Math.max(0, this.yValue(datum))))
       .attr('width', this.xScale.bandwidth())
       .attr('height', datum =>
+        //TODO: 高度处理 this.yScale(this.margin.bottom) 或 this.yScale(0)
         Math.abs(
-          this.yScale(this.yValue(datum)) - this.yScale(this.margin.bottom)
+          this.yScale(this.yValue(datum)) -
+            this.yScale(Math.min(0, this.margin.bottom))
         )
       )
       .attr('fill', () => {
