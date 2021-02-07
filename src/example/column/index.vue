@@ -8,28 +8,106 @@ import Column from '../../basic/column';
 const data = [
   {
     type: '家具家电',
-    name: '电视',
-    sales: 38
+    sales: 20
   },
   {
     type: '粮油副食',
-    name: '大米',
     sales: 52
   },
   {
     type: '生鲜水果',
-    name: '苹果',
     sales: 61
   },
   {
     type: '美容洗护',
-    name: '面膜',
     sales: 145
   },
   {
     type: '母婴用品',
-    name: '纸尿裤',
     sales: 48
+  }
+];
+
+const data1 = [
+  {
+    name: 'London',
+    月份: 'Jan.',
+    月均降雨量: 18.9
+  },
+  {
+    name: 'London',
+    月份: 'Feb.',
+    月均降雨量: 28.8
+  },
+  {
+    name: 'London',
+    月份: 'Mar.',
+    月均降雨量: 39.3
+  },
+  {
+    name: 'London',
+    月份: 'Apr.',
+    月均降雨量: 81.4
+  },
+  {
+    name: 'London',
+    月份: 'May',
+    月均降雨量: 47
+  },
+  {
+    name: 'London',
+    月份: 'Jun.',
+    月均降雨量: 20.3
+  },
+  {
+    name: 'London',
+    月份: 'Jul.',
+    月均降雨量: 24
+  },
+  {
+    name: 'London',
+    月份: 'Aug.',
+    月均降雨量: 35.6
+  },
+  {
+    name: 'Berlin',
+    月份: 'Jan.',
+    月均降雨量: 10
+  },
+  {
+    name: 'Berlin',
+    月份: 'Feb.',
+    月均降雨量: 23.2
+  },
+  {
+    name: 'Berlin',
+    月份: 'Mar.',
+    月均降雨量: 34.5
+  },
+  {
+    name: 'Berlin',
+    月份: 'Apr.',
+    月均降雨量: 99.7
+  },
+  {
+    name: 'Berlin',
+    月份: 'May',
+    月均降雨量: 52.6
+  },
+  {
+    name: 'Berlin',
+    月份: 'Jun.',
+    月均降雨量: 35.5
+  },
+  {
+    name: 'Berlin',
+    月份: 'Jul.',
+    月均降雨量: 37.4
+  },
+  {
+    name: 'Berlin',
+    月份: 'Aug.',
+    月均降雨量: 42.4
   }
 ];
 

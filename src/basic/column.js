@@ -5,7 +5,8 @@ import {
   scaleLinear,
   schemeCategory10,
   axisRight,
-  axisBottom
+  axisBottom,
+  ticks
 } from 'd3';
 import Chart from './chart';
 import { LabelPositionType } from './components/label';
@@ -22,7 +23,7 @@ export default class Column extends Chart {
 
     this.yScale = scaleLinear()
       .domain([this.minValue, this.maxValue])
-      .range([this.innerHeight, 0])
+      .range([this.innerHeight, this.margin.top])
       .nice();
 
     this.xScale = scaleBand()
@@ -75,10 +76,9 @@ export default class Column extends Chart {
       .attr('y', datum => this.yScale(Math.max(0, this.yValue(datum))))
       .attr('width', this.xScale.bandwidth())
       .attr('height', datum => {
-        return Math.abs(
-          this.yScale(this.yValue(datum)) -
-            this.yScale(this.minValue > 0 ? this.margin.bottom : 0)
-        );
+        return this.minValue < 0
+          ? Math.abs(this.yScale(this.yValue(datum)) - this.yScale(0))
+          : Math.abs(this.yScale(this.yValue(datum)) - this.innerHeight);
       })
       .attr('fill', () => {
         if (this.color instanceof Array) {
