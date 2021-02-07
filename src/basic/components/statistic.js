@@ -1,4 +1,4 @@
-import { camelToLineConverter } from '../utils/string-util';
+import { parseStyle } from '../utils/data-vis-util';
 
 const statisticText = function(props) {
   const { selection, style, formatter } = props;
@@ -6,12 +6,7 @@ const statisticText = function(props) {
     .append('text')
     .attr('text-anchor', 'middle')
     .text(() => formatter());
-
-  for (const item in style) {
-    if (Object.hasOwnProperty.call(style, item)) {
-      text.attr(camelToLineConverter(item), style[item]);
-    }
-  }
+  parseStyle(text, style);
 };
 
 export class Statistic {

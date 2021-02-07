@@ -37,7 +37,12 @@ export default {
       yField: 'sales',
       lineType: 'linear',
       point: {
-        shape: 'triangle'
+        shape: 'star',
+        size: 60,
+        style: {
+          fill: 'white',
+          stroke: 'green'
+        }
       },
       width: 800,
       height: 600

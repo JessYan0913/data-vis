@@ -12,11 +12,10 @@ import {
   curveBasis,
   curveStep,
   curveStepAfter,
-  curveStepBefore,
-  symbol,
-  symbols
+  curveStepBefore
 } from 'd3';
 import Chart from './chart';
+import { Point } from './components/point';
 
 const curveType = {
   linear: curveLinear,
@@ -34,6 +33,7 @@ export default class Line extends Chart {
       data,
       xField,
       yField,
+      point,
       lineType = 'linear',
       color = schemeCategory10
     } = props;
@@ -53,6 +53,8 @@ export default class Line extends Chart {
       .curve(curveType[lineType] ?? curveType.linear)
       .x(d => this.xScale(this.xValue(d)) + this.xScale.bandwidth() / 2)
       .y(d => this.yScale(this.yValue(d)));
+
+    this.point = point ? new Point({ ...point }) : undefined;
 
     this.color = color;
   }
@@ -96,68 +98,16 @@ export default class Line extends Chart {
       .attr('stroke-width', 3)
       .attr('stroke', 'green');
 
-    //generate point
-    // lineGroup
-    //   .append('g')
-    //   .selectAll('circle')
-    //   .data(this.data)
-    //   .enter()
-    //   .append('path')
-    //   .attr(
-    //     'd',
-    //     symbol()
-    //       .type(symbols[1])
-    //       .size(80)
-    //   )
-    //   .attr(
-    //     'transform',
-    //     datum =>
-    //       `translate(${this.xScale(this.xValue(datum)) +
-    //         this.xScale.bandwidth() / 2}, ${this.yScale(this.yValue(datum))})`
-    //   )
-    //   .attr('fill', 'white')
-    //   .attr('stroke', 'red');
-
-    // lineGroup
-    //   .selectAll('circle')
-    //   .data(this.data)
-    //   .enter()
-    //   .append('circle')
-    //   .attr('r', 10)
-    //   .attr(
-    //     'cx',
-    //     datum => this.xScale(this.xValue(datum)) + this.xScale.bandwidth() / 2
-    //   )
-    //   .attr('cy', datum => this.yScale(this.yValue(datum)))
-    //   .attr('fill', 'white')
-    //   .attr('stroke', 'red')
-    //   .attr('stroke-width', 3);
-
-    lineGroup
+    const pointGroup = lineGroup
       .append('g')
-      .selectAll('circle')
+      .selectAll('point')
       .data(this.data)
-      .enter()
-      .call(this.generatePoint)
-      .attr(
-        'transform',
-        datum =>
-          `translate(${this.xScale(this.xValue(datum)) +
-            this.xScale.bandwidth() / 2}, ${this.yScale(this.yValue(datum))})`
-      );
-  }
+      .enter();
 
-  generatePoint(selection) {
-    const point = selection
-      .append('path')
-      .attr(
-        'd',
-        symbol()
-          .type(symbols[1])
-          .size(80)
-      )
-      .attr('fill', 'white')
-      .attr('stroke', 'red');
-    // return point;
+    this.point?.render({
+      selection: pointGroup,
+      x: datum => this.xScale(this.xValue(datum)) + this.xScale.bandwidth() / 2,
+      y: datum => this.yScale(this.yValue(datum))
+    });
   }
 }

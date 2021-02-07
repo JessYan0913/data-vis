@@ -1,4 +1,5 @@
 import { symbol, symbols } from 'd3';
+import { parseStyle } from '../utils/data-vis-util';
 
 const PointShape = {
   circle: symbols[0],
@@ -12,23 +13,24 @@ const PointShape = {
 
 export class Point {
   constructor(props) {
-    const { shape, size, style } = props;
+    const { shape, style, size = 80 } = props;
     this.shape = PointShape[shape] ?? PointShape.circle;
     this.size = size;
     this.style = style;
   }
 
-  render({ selection }) {
+  render(params) {
+    const { selection, x, y } = params;
     const symbolPath = selection.append('path').attr(
       'd',
       symbol()
         .type(this.shape)
         .size(this.size)
     );
-    for (const item in this.style) {
-      if (Object.hasOwnProperty.call(this.style, item)) {
-        symbolPath.attr(camelToLineConverter(item), this.style[item]);
-      }
-    }
+    parseStyle(symbolPath, this.style);
+    symbolPath.attr(
+      'transform',
+      datum => `translate(${x(datum)}, ${y(datum)})`
+    );
   }
 }
