@@ -8,7 +8,7 @@ import Column from '../../basic/column';
 const data = [
   {
     type: '家具家电',
-    sales: 20
+    sales: 2
   },
   {
     type: '粮油副食',
@@ -72,7 +72,7 @@ const data1 = [
   {
     name: 'Berlin',
     月份: 'Jan.',
-    月均降雨量: 10
+    月均降雨量: 15
   },
   {
     name: 'Berlin',
@@ -108,24 +108,59 @@ const data1 = [
     name: 'Berlin',
     月份: 'Aug.',
     月均降雨量: 42.4
+  },
+  {
+    name: 'Beijing',
+    月份: 'Jan.',
+    月均降雨量: 18.9
+  },
+  {
+    name: 'Beijing',
+    月份: 'Feb.',
+    月均降雨量: 28.8
+  },
+  {
+    name: 'Beijing',
+    月份: 'Apr.',
+    月均降雨量: 47
   }
 ];
+
+const dataConfig = {
+  data: {
+    data,
+    xField: 'type',
+    yField: 'sales',
+    label: {
+      position: 'top',
+      style: {
+        fontSize: 16,
+        fill: 'red'
+      },
+      formatter: datum => `${datum.sales} ¥`
+    }
+  },
+  data1: {
+    data: data1,
+    xField: '月份',
+    yField: '月均降雨量',
+    seriesField: 'name',
+    label: {
+      position: 'top',
+      style: {
+        fontSize: 16,
+        fill: 'red'
+      },
+      formatter: datum => `${datum.月份}`
+    }
+  }
+};
 
 export default {
   mounted() {
     const column = new Column({
+      ...dataConfig.data1,
       container: '#column-div',
-      data,
-      label: {
-        position: 'top',
-        style: {
-          fontSize: 16,
-          fill: 'red'
-        },
-        formatter: datum => `${datum.sales} ¥`
-      },
-      xField: 'type',
-      yField: 'sales',
       width: 800,
       height: 600
     });

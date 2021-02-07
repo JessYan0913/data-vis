@@ -7,3 +7,7 @@ export function parseStyle(selection, style) {
     }
   }
 }
+
+export function unique(arr) {
+  return [...new Set(arr)];
+}

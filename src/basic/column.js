@@ -6,17 +6,25 @@ import {
   schemeCategory10,
   axisRight,
   axisBottom,
-  ticks
+  group
 } from 'd3';
 import Chart from './chart';
 import { LabelPositionType } from './components/label';
+import { unique } from './utils/data-vis-util';
 
 export default class Column extends Chart {
   constructor(props) {
     super(props);
-    const { data, xField, yField, color = schemeCategory10 } = props;
+    const {
+      data,
+      xField,
+      yField,
+      seriesField,
+      color = schemeCategory10
+    } = props;
     this.xValue = item => item[xField];
     this.yValue = item => item[yField];
+    this.seriesValue = item => item[seriesField];
 
     this.minValue = min(data, this.yValue);
     this.maxValue = max(data, this.yValue);
@@ -26,10 +34,19 @@ export default class Column extends Chart {
       .range([this.innerHeight, this.margin.top])
       .nice();
 
+    this.xKeys = unique(data.map(this.xValue));
+
     this.xScale = scaleBand()
-      .domain(data.map(this.xValue))
+      .domain(this.xKeys)
       .range([this.margin.left, this.innerWidth])
       .padding(0.2);
+
+    this.seriesKeys = unique(data.map(this.seriesValue));
+
+    this.seriesScale = scaleBand()
+      .domain(this.seriesKeys)
+      .range([0, this.xScale.bandwidth()])
+      .padding(0.05);
 
     this.color = color;
   }
@@ -63,26 +80,39 @@ export default class Column extends Chart {
       .call(axisBottom(this.xScale))
       .attr('transform', `translate(${0}, ${this.innerHeight})`);
 
+    const groupData = Array.from(
+      group(this.data, this.xValue),
+      ([key, value]) => ({ key, value })
+    );
+
     //generate column
     const columnGroup = chartGroup
+      .selectAll('column')
+      .data(groupData)
+      .join('g')
+      .attr('transform', datum => {
+        return `translate(${this.xScale(datum.key)}, 0)`;
+      });
+
+    const seriesColumnGroup = columnGroup
       .selectAll('rect')
-      .data(this.data)
+      .data(datum => datum.value)
       .enter()
       .append('g');
 
-    columnGroup
+    seriesColumnGroup
       .append('rect')
-      .attr('x', datum => this.xScale(this.xValue(datum)))
+      .attr('x', datum => this.seriesScale(this.seriesValue(datum)))
       .attr('y', datum => this.yScale(Math.max(0, this.yValue(datum))))
-      .attr('width', this.xScale.bandwidth())
-      .attr('height', datum => {
-        return this.minValue < 0
+      .attr('width', this.seriesScale.bandwidth())
+      .attr('height', datum =>
+        this.minValue < 0
           ? Math.abs(this.yScale(this.yValue(datum)) - this.yScale(0))
-          : Math.abs(this.yScale(this.yValue(datum)) - this.innerHeight);
-      })
-      .attr('fill', () => {
+          : Math.abs(this.yScale(this.yValue(datum)) - this.innerHeight)
+      )
+      .attr('fill', (_, index) => {
         if (this.color instanceof Array) {
-          return this.color[0];
+          return this.color[index];
         }
         return this.color;
       });
@@ -90,12 +120,14 @@ export default class Column extends Chart {
     //generate column label
     this.label?.render({
       type: LabelPositionType.ColumnLabelPosition,
-      selection: columnGroup,
-      width: () => this.xScale.bandwidth(),
+      selection: seriesColumnGroup,
+      width: () => this.seriesScale.bandwidth(),
       height: datum =>
-        this.yScale(this.yValue(datum)) - this.yScale(this.margin.bottom),
-      x: datum => this.xScale(this.xValue(datum)),
-      y: datum => this.yScale(this.yValue(datum)),
+        this.minValue < 0
+          ? Math.abs(this.yScale(this.yValue(datum)) - this.yScale(0))
+          : Math.abs(this.yScale(this.yValue(datum)) - this.innerHeight),
+      x: datum => this.seriesScale(this.seriesValue(datum)),
+      y: datum => this.yScale(Math.max(0, this.yValue(datum))),
       text: datum => this.yValue(datum)
     });
   }
