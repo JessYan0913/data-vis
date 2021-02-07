@@ -8,23 +8,28 @@ import Column from '../../basic/column';
 const data = [
   {
     type: '家具家电',
+    name: '电视',
     sales: 38
   },
   {
     type: '粮油副食',
+    name: '大米',
     sales: 52
   },
   {
     type: '生鲜水果',
+    name: '苹果',
     sales: 61
   },
   {
     type: '美容洗护',
+    name: '面膜',
     sales: 145
   },
   {
     type: '母婴用品',
-    sales: -48
+    name: '纸尿裤',
+    sales: 48
   }
 ];
 

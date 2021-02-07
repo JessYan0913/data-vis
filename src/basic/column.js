@@ -17,8 +17,11 @@ export default class Column extends Chart {
     this.xValue = item => item[xField];
     this.yValue = item => item[yField];
 
+    this.minValue = min(data, this.yValue);
+    this.maxValue = max(data, this.yValue);
+
     this.yScale = scaleLinear()
-      .domain([min(data, this.yValue), max(data, this.yValue)])
+      .domain([this.minValue, this.maxValue])
       .range([this.innerHeight, 0])
       .nice();
 
@@ -71,13 +74,12 @@ export default class Column extends Chart {
       .attr('x', datum => this.xScale(this.xValue(datum)))
       .attr('y', datum => this.yScale(Math.max(0, this.yValue(datum))))
       .attr('width', this.xScale.bandwidth())
-      .attr('height', datum =>
-        //TODO: 高度处理 this.yScale(this.margin.bottom) 或 this.yScale(0)
-        Math.abs(
+      .attr('height', datum => {
+        return Math.abs(
           this.yScale(this.yValue(datum)) -
-            this.yScale(Math.min(0, this.margin.bottom))
-        )
-      )
+            this.yScale(this.minValue > 0 ? this.margin.bottom : 0)
+        );
+      })
       .attr('fill', () => {
         if (this.color instanceof Array) {
           return this.color[0];

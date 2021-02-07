@@ -56,14 +56,14 @@ export default {
             fontSize: 20
           },
           formatter: () => {
-            return `${data.reduce((prev, cur) => cur.sales + prev, 0)} $`;
+            return `${data.reduce((prev, cur) => cur.sales + prev, 0)} ¥`;
           }
         }
       },
       angleField: 'sales',
       colorField: 'type',
       radius: 0.9,
-      innerRadius: 0,
+      innerRadius: 0.4,
       width: 800,
       height: 600
     });
