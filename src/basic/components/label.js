@@ -21,7 +21,7 @@ const ColumnLabelPosition = {
       ? x(datum) + (isFunction(width) ? width(datum) : +width) / 2
       : +x,
     y: isFunction(y)
-      ? y(datum) - (isFunction(height) ? height(datum) : +height) / 2
+      ? y(datum) + (isFunction(height) ? height(datum) : +height) / 2
       : +y
   }),
   right: ({ datum, width, height, x, y }) => ({
@@ -37,7 +37,7 @@ const ColumnLabelPosition = {
       ? x(datum) + (isFunction(width) ? width(datum) : +width) / 2
       : +x,
     y: isFunction(y)
-      ? y(datum) - (isFunction(height) ? height(datum) : +height)
+      ? y(datum) + (isFunction(height) ? height(datum) : +height)
       : +y
   })
 };

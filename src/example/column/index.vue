@@ -12,7 +12,7 @@ const data = [
   },
   {
     type: '粮油副食',
-    sales: 52
+    sales: -52
   },
   {
     type: '生鲜水果',
@@ -112,7 +112,7 @@ const data1 = [
   {
     name: 'Beijing',
     月份: 'Jan.',
-    月均降雨量: 18.9
+    月均降雨量: -18.9
   },
   {
     name: 'Beijing',
@@ -132,7 +132,7 @@ const dataConfig = {
     xField: 'type',
     yField: 'sales',
     label: {
-      position: 'top',
+      position: 'bottom',
       style: {
         fontSize: 16,
         fill: 'red'
@@ -146,7 +146,7 @@ const dataConfig = {
     yField: '月均降雨量',
     seriesField: 'name',
     label: {
-      position: 'top',
+      position: 'middle',
       style: {
         fontSize: 16,
         fill: 'red'
@@ -159,7 +159,7 @@ const dataConfig = {
 export default {
   mounted() {
     const column = new Column({
-      ...dataConfig.data1,
+      ...dataConfig.data,
       container: '#column-div',
       width: 800,
       height: 600
