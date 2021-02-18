@@ -148,10 +148,10 @@ const dataConfig = {
     label: {
       position: 'middle',
       style: {
-        fontSize: 16,
-        fill: 'red'
+        fontSize: 10,
+        fill: 'black'
       },
-      formatter: datum => `${datum.月份}`
+      formatter: datum => `${datum.月均降雨量}`
     }
   }
 };
@@ -159,7 +159,7 @@ const dataConfig = {
 export default {
   mounted() {
     const column = new Column({
-      ...dataConfig.data,
+      ...dataConfig.data1,
       container: '#column-div',
       width: 800,
       height: 600

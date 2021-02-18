@@ -4,9 +4,9 @@ import {
   scaleBand,
   scaleLinear,
   schemeCategory10,
-  axisRight,
   axisBottom,
-  group
+  group,
+  axisLeft
 } from 'd3';
 import Chart from './chart';
 import { LabelPositionType } from './components/label';
@@ -58,27 +58,26 @@ export default class Column extends Chart {
 
     //generate yAxis
     //TODO: 坐标轴应该抽成组件
-    chartGroup
+    const yAxisGroup = chartGroup
       .append('g')
-      .call(axisRight(this.yScale).tickSize(this.innerWidth));
-
-    const yAxisGroup = chartGroup.selection();
+      .call(axisLeft(this.yScale).tickSize(0));
     yAxisGroup.select('.domain').remove();
     yAxisGroup
-      .selectAll('.tick line')
-      .filter(Number)
-      .attr('stroke', '#777');
-    yAxisGroup
-      .selectAll('.tick text')
-      .attr('x', 4)
-      .attr('dy', -4);
+      .selectAll('.tick')
+      .select('line')
+      .attr('x2', this.innerWidth)
+      .attr('stroke-dasharray', '5,10,2,5');
 
     //generate xAxis
     //TODO: 坐标轴应该抽成组件
-    chartGroup
+    const xAxisGroup = chartGroup
       .append('g')
       .call(axisBottom(this.xScale))
       .attr('transform', `translate(${0}, ${this.innerHeight})`);
+    xAxisGroup
+      .selectAll('.tick')
+      .select('line')
+      .attr('y2', -this.innerHeight);
 
     const groupData = Array.from(
       group(this.data, this.xValue),
