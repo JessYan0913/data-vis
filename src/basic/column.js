@@ -12,8 +12,8 @@ export default class Column extends Chart {
       xField,
       yField,
       seriesField,
-      xAxis = { position: 'bottom' },
-      yAxis = { position: 'left', lineStyle: {} },
+      xAxis,
+      yAxis,
       color = schemeCategory10
     } = props;
     this.xValue = item => item[xField];
@@ -42,8 +42,8 @@ export default class Column extends Chart {
       .range([0, this.xScale.bandwidth()])
       .padding(0.05);
 
-    this.xAxis = new Axis({ ...xAxis });
-    this.yAxis = new Axis({ ...yAxis });
+    this.xAxis = new Axis({ position: 'bottom', ...xAxis });
+    this.yAxis = new Axis({ position: 'left', lineStyle: {}, ...yAxis });
     this.color = color;
   }
 

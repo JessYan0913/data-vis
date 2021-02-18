@@ -45,7 +45,17 @@ export default {
         }
       },
       width: 800,
-      height: 600
+      height: 600,
+      xAxis: {
+        lineStyle: {
+          strokeDasharray: '5,10,5'
+        }
+      },
+      yAxis: {
+        lineStyle: {
+          strokeDasharray: '5,10,5'
+        }
+      }
     });
     line.render();
   }

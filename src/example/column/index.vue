@@ -152,6 +152,11 @@ const dataConfig = {
         fill: 'black'
       },
       formatter: datum => `${datum.月均降雨量}`
+    },
+    xAxis: {
+      lineStyle: {
+        strokeDasharray: '5,10,5'
+      }
     }
   }
 };

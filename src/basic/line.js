@@ -34,8 +34,8 @@ export default class Line extends Chart {
       yField,
       point,
       lineType = 'linear',
-      xAxis = { position: 'bottom' },
-      yAxis = { position: 'left', lineStyle: {} },
+      xAxis,
+      yAxis,
       color = schemeCategory10
     } = props;
     this.xValue = item => item[xField];
@@ -57,9 +57,8 @@ export default class Line extends Chart {
 
     this.point = point ? new Point({ ...point }) : undefined;
 
-    this.xAxis = new Axis({ ...xAxis });
-    this.yAxis = new Axis({ ...yAxis });
-
+    this.xAxis = new Axis({ position: 'bottom', ...xAxis });
+    this.yAxis = new Axis({ position: 'left', lineStyle: {}, ...yAxis });
     this.color = color;
   }
 
