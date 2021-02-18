@@ -4,8 +4,6 @@ import {
   schemeCategory10,
   min,
   max,
-  axisRight,
-  axisBottom,
   line,
   curveLinear,
   curveNatural,
@@ -15,6 +13,7 @@ import {
   curveStepBefore
 } from 'd3';
 import Chart from './chart';
+import { Axis } from './components/axis';
 import { Point } from './components/point';
 
 const curveType = {
@@ -35,6 +34,8 @@ export default class Line extends Chart {
       yField,
       point,
       lineType = 'linear',
+      xAxis = { position: 'bottom' },
+      yAxis = { position: 'left', lineStyle: {} },
       color = schemeCategory10
     } = props;
     this.xValue = item => item[xField];
@@ -56,6 +57,9 @@ export default class Line extends Chart {
 
     this.point = point ? new Point({ ...point }) : undefined;
 
+    this.xAxis = new Axis({ ...xAxis });
+    this.yAxis = new Axis({ ...yAxis });
+
     this.color = color;
   }
 
@@ -64,29 +68,19 @@ export default class Line extends Chart {
       .append('g')
       .attr('transform', `translate(${this.margin.left}, ${this.margin.top})`);
 
-    //generate yAxis
-    //TODO: 坐标轴应该抽成组件
-    chartGroup
-      .append('g')
-      .call(axisRight(this.yScale).tickSize(this.innerWidth));
+    this.yAxis.render({
+      selection: chartGroup,
+      scale: this.yScale,
+      height: this.innerHeight,
+      width: this.innerWidth
+    });
 
-    const yAxisGroup = chartGroup.selection();
-    yAxisGroup.select('.domain').remove();
-    yAxisGroup
-      .selectAll('.tick line')
-      .filter(Number)
-      .attr('stroke', '#777');
-    yAxisGroup
-      .selectAll('.tick text')
-      .attr('x', 4)
-      .attr('dy', -4);
-
-    //generate xAxis
-    //TODO: 坐标轴应该抽成组件
-    chartGroup
-      .append('g')
-      .call(axisBottom(this.xScale))
-      .attr('transform', `translate(${0}, ${this.innerHeight})`);
+    this.xAxis.render({
+      selection: chartGroup,
+      scale: this.xScale,
+      height: this.innerHeight,
+      width: this.innerWidth
+    });
 
     const lineGroup = chartGroup.append('g');
 

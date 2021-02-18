@@ -33,12 +33,14 @@ export class Axis {
   }
 
   render(params) {
-    const { scale, selection } = params;
     const axisGroup = AxisPosition[this.position]({ ...params });
     axisGroup.select('.domain').remove();
-    axisGroup
-      .selectAll('.tick')
-      .select('line')
-      .call(selection => AxisLine[this.position]({ ...params, selection }));
+    if (this.lineStyle) {
+      axisGroup
+        .selectAll('.tick')
+        .select('line')
+        .call(selection => AxisLine[this.position]({ ...params, selection }))
+        .call(selection => parseStyle(selection, this.lineStyle));
+    }
   }
 }

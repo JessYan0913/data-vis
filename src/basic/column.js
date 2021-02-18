@@ -1,14 +1,6 @@
-import {
-  max,
-  min,
-  scaleBand,
-  scaleLinear,
-  schemeCategory10,
-  axisBottom,
-  group,
-  axisLeft
-} from 'd3';
+import { max, min, scaleBand, scaleLinear, schemeCategory10, group } from 'd3';
 import Chart from './chart';
+import { Axis } from './components/axis';
 import { LabelPositionType } from './components/label';
 import { unique } from './utils/data-vis-util';
 
@@ -20,6 +12,8 @@ export default class Column extends Chart {
       xField,
       yField,
       seriesField,
+      xAxis = { position: 'bottom' },
+      yAxis = { position: 'left', lineStyle: {} },
       color = schemeCategory10
     } = props;
     this.xValue = item => item[xField];
@@ -48,6 +42,8 @@ export default class Column extends Chart {
       .range([0, this.xScale.bandwidth()])
       .padding(0.05);
 
+    this.xAxis = new Axis({ ...xAxis });
+    this.yAxis = new Axis({ ...yAxis });
     this.color = color;
   }
 
@@ -56,28 +52,19 @@ export default class Column extends Chart {
       .append('g')
       .attr('transform', `translate(${this.margin.left}, ${this.margin.top})`);
 
-    //generate yAxis
-    //TODO: 坐标轴应该抽成组件
-    const yAxisGroup = chartGroup
-      .append('g')
-      .call(axisLeft(this.yScale).tickSize(0));
-    yAxisGroup.select('.domain').remove();
-    yAxisGroup
-      .selectAll('.tick')
-      .select('line')
-      .attr('x2', this.innerWidth)
-      .attr('stroke-dasharray', '5,10,2,5');
+    this.yAxis.render({
+      selection: chartGroup,
+      scale: this.yScale,
+      height: this.innerHeight,
+      width: this.innerWidth
+    });
 
-    //generate xAxis
-    //TODO: 坐标轴应该抽成组件
-    const xAxisGroup = chartGroup
-      .append('g')
-      .call(axisBottom(this.xScale))
-      .attr('transform', `translate(${0}, ${this.innerHeight})`);
-    xAxisGroup
-      .selectAll('.tick')
-      .select('line')
-      .attr('y2', -this.innerHeight);
+    this.xAxis.render({
+      selection: chartGroup,
+      scale: this.xScale,
+      height: this.innerHeight,
+      width: this.innerWidth
+    });
 
     const groupData = Array.from(
       group(this.data, this.xValue),
