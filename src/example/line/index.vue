@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import Line from '../../basic/line';
+import Line from '../../general/line';
 
 const data = [
   {

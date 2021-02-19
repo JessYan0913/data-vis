@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import Pie from '../../basic/pie';
+import Pie from '../../general/pie';
 
 const data = [
   {

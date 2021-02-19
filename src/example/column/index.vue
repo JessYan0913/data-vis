@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import Column from '../../basic/column';
+import Column from '../../general/column';
 
 const data = [
   {
