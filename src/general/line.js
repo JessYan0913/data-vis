@@ -10,7 +10,8 @@ import {
   curveBasis,
   curveStep,
   curveStepAfter,
-  curveStepBefore
+  curveStepBefore,
+  group
 } from 'd3';
 import Chart from './chart';
 import { Axis } from './components/axis';
@@ -33,6 +34,7 @@ export default class Line extends Chart {
       data,
       xField,
       yField,
+      seriesField,
       label,
       point,
       lineType = 'linear',
@@ -43,6 +45,7 @@ export default class Line extends Chart {
 
     this.xValue = item => item[xField];
     this.yValue = item => item[yField];
+    this.seriesValue = item => item[seriesField];
 
     this.yScale = scaleLinear()
       .domain([min(data, this.yValue), max(data, this.yValue)])
@@ -91,25 +94,36 @@ export default class Line extends Chart {
       ...axisConfig
     });
 
-    const lineGroup = chartGroup.append('g');
-
     //TODO: 缺少图例组件
 
-    //TODO: 缺少分组展示功能
-
     //generate line
+    const groupData = Array.from(
+      group(this.data, this.seriesValue),
+      ([_, value]) => value
+    );
+
+    const lineGroup = chartGroup
+      .selectAll('.line')
+      .data(groupData)
+      .join('g');
+
     lineGroup
       .append('path')
-      .attr('d', this.linePath(this.data))
+      .attr('d', datum => this.linePath(datum))
       .attr('fill', 'none')
       .attr('stroke-width', 3)
-      .attr('stroke', this.color[0]);
+      .attr('stroke', (_, index) => {
+        if (this.color instanceof Array) {
+          return this.color[index];
+        }
+        return this.color;
+      });
 
     //generate point
     const pointGroup = lineGroup
       .append('g')
       .selectAll('point')
-      .data(this.data)
+      .data(datum => datum)
       .enter();
 
     this.point?.render({

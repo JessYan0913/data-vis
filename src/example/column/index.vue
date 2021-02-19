@@ -151,7 +151,10 @@ const dataConfig = {
         fontSize: 10,
         fill: 'black'
       },
-      formatter: datum => `${datum.月均降雨量}`
+      formatter: datum => {
+        console.log(datum);
+        return `${datum.月均降雨量}`;
+      }
     }
   }
 };

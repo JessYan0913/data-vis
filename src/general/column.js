@@ -2,7 +2,7 @@ import { max, min, scaleBand, scaleLinear, schemeCategory10, group } from 'd3';
 import Chart from './chart';
 import { Axis } from './components/axis';
 import { LabelPositionType, Label } from './components/label';
-import { unique } from './utils/data-vis-util';
+import { unique } from '../utils/data-vis-util';
 
 export default class Column extends Chart {
   constructor(props) {
