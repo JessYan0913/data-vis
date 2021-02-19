@@ -100,7 +100,7 @@ export default class Line extends Chart {
       .attr('d', this.linePath(this.data))
       .attr('fill', 'none')
       .attr('stroke-width', 3)
-      .attr('stroke', 'green');
+      .attr('stroke', this.color[0]);
 
     //generate point
     const pointGroup = lineGroup

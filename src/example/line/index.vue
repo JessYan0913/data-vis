@@ -38,11 +38,7 @@ export default {
       lineType: 'linear',
       point: {
         shape: 'star',
-        size: 60,
-        style: {
-          fill: 'white',
-          stroke: 'green'
-        }
+        size: 60
       },
       width: 800,
       height: 600,

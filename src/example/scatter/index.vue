@@ -46,6 +46,12 @@ export default {
       data,
       xField: 'x',
       yField: 'y',
+      point: {
+        shape: 'star',
+        style: {
+          fill: 'green'
+        }
+      },
       width: 800,
       height: 600
     });
