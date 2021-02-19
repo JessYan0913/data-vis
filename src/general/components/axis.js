@@ -41,7 +41,6 @@ class AxisPosition {
   }
 
   bottom() {
-    console.log(this.title);
     this.axisTitle?.attr(
       'transform',
       `translate(${this.width / 2}, ${this.title.offset})`

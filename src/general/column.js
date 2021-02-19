@@ -16,6 +16,7 @@ export default class Column extends Chart {
       yAxis,
       color = schemeCategory10
     } = props;
+
     this.xValue = item => item[xField];
     this.yValue = item => item[yField];
     this.seriesValue = item => item[seriesField];
@@ -44,6 +45,7 @@ export default class Column extends Chart {
 
     this.xAxis = new Axis({ position: 'bottom', ...xAxis });
     this.yAxis = new Axis({ position: 'left', lineStyle: {}, ...yAxis });
+
     this.color = color;
   }
 
@@ -52,18 +54,20 @@ export default class Column extends Chart {
       .append('g')
       .attr('transform', `translate(${this.margin.left}, ${this.margin.top})`);
 
-    this.yAxis.render({
+    const axisConfig = {
       selection: chartGroup,
-      scale: this.yScale,
       height: this.innerHeight,
       width: this.innerWidth
+    };
+
+    this.yAxis.render({
+      scale: this.yScale,
+      ...axisConfig
     });
 
     this.xAxis.render({
-      selection: chartGroup,
       scale: this.xScale,
-      height: this.innerHeight,
-      width: this.innerWidth
+      ...axisConfig
     });
 
     const groupData = Array.from(

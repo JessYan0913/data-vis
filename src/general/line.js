@@ -15,6 +15,7 @@ import {
 import Chart from './chart';
 import { Axis } from './components/axis';
 import { Point } from './components/point';
+import { LabelPositionType } from './components/label';
 
 const curveType = {
   linear: curveLinear,
@@ -38,6 +39,7 @@ export default class Line extends Chart {
       yAxis,
       color = schemeCategory10
     } = props;
+
     this.xValue = item => item[xField];
     this.yValue = item => item[yField];
 
@@ -59,6 +61,7 @@ export default class Line extends Chart {
 
     this.xAxis = new Axis({ position: 'bottom', ...xAxis });
     this.yAxis = new Axis({ position: 'left', lineStyle: {}, ...yAxis });
+
     this.color = color;
   }
 
@@ -67,23 +70,25 @@ export default class Line extends Chart {
       .append('g')
       .attr('transform', `translate(${this.margin.left}, ${this.margin.top})`);
 
-    this.yAxis.render({
+    const axisConfig = {
       selection: chartGroup,
-      scale: this.yScale,
       height: this.innerHeight,
       width: this.innerWidth
+    };
+
+    this.yAxis.render({
+      scale: this.yScale,
+      ...axisConfig
     });
 
     this.xAxis.render({
-      selection: chartGroup,
       scale: this.xScale,
-      height: this.innerHeight,
-      width: this.innerWidth
+      ...axisConfig
     });
 
     const lineGroup = chartGroup.append('g');
 
-    //generate column
+    //generate line
     lineGroup
       .append('path')
       .attr('d', this.linePath(this.data))
@@ -91,6 +96,7 @@ export default class Line extends Chart {
       .attr('stroke-width', 3)
       .attr('stroke', 'green');
 
+    //generate point
     const pointGroup = lineGroup
       .append('g')
       .selectAll('point')
