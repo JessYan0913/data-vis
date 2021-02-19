@@ -1,7 +1,7 @@
 import { arc } from 'd3';
-import { parseStyle } from '../utils/data-vis-util';
-import { isFunction } from '../utils/function-util';
-import { isString } from '../utils/string-util';
+import { parseStyle } from '../../utils/data-vis-util';
+import { isFunction } from '../../utils/function-util';
+import { isString } from '../../utils/string-util';
 
 const ColumnLabelPosition = {
   top: ({ datum, width, x, y }) => ({

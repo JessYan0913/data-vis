@@ -1,5 +1,5 @@
 import { axisBottom, axisLeft, axisRight, axisTop } from 'd3';
-import { parseStyle } from '../utils/data-vis-util';
+import { parseStyle } from '../../utils/data-vis-util';
 
 class AxisPosition {
   constructor(props) {

@@ -1,5 +1,5 @@
 import { symbol, symbols } from 'd3';
-import { parseStyle } from '../utils/data-vis-util';
+import { parseStyle } from '../../utils/data-vis-util';
 
 const PointShape = {
   circle: symbols[0],

@@ -1,4 +1,4 @@
-import { camelToLineConverter } from '../utils/string-util';
+import { camelToLineConverter } from './string-util';
 
 export function parseStyle(selection, style) {
   if (!selection) {
