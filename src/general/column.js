@@ -3,6 +3,7 @@ import Chart from './chart';
 import { Axis } from './components/axis';
 import { LabelPositionType } from './components/label';
 import { unique } from './utils/data-vis-util';
+import { Label } from './components/label';
 
 export default class Column extends Chart {
   constructor(props) {
@@ -12,6 +13,7 @@ export default class Column extends Chart {
       xField,
       yField,
       seriesField,
+      label,
       xAxis,
       yAxis,
       color = schemeCategory10
@@ -42,6 +44,10 @@ export default class Column extends Chart {
       .domain(this.seriesKeys)
       .range([0, this.xScale.bandwidth()])
       .padding(0.05);
+
+    this.label = label
+      ? new Label({ position: 'top', style: { fontSize: 14 }, ...label })
+      : undefined;
 
     this.xAxis = new Axis({ position: 'bottom', ...xAxis });
     this.yAxis = new Axis({ position: 'left', lineStyle: {}, ...yAxis });

@@ -1,5 +1,4 @@
 import { select } from 'd3';
-import { Label } from './components/label';
 
 export default class Chart {
   constructor(props) {
@@ -7,7 +6,6 @@ export default class Chart {
       container,
       title,
       data,
-      label,
       width,
       height,
       margin = { top: 40, left: 40, bottom: 40, right: 40 }
@@ -21,7 +19,6 @@ export default class Chart {
     this.innerHeight = height - margin.top - margin.bottom;
     this.title = title;
     this.data = data;
-    this.label = label ? new Label({ ...label }) : undefined;
     this.margin = margin;
   }
 }

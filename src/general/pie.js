@@ -2,6 +2,7 @@ import { arc, pie, scaleOrdinal, schemePaired } from 'd3';
 import Chart from './chart';
 import { LabelPositionType } from './components/label';
 import { Statistic } from './components/statistic';
+import { Label } from './components/label';
 
 export default class Pie extends Chart {
   constructor(props) {
@@ -10,6 +11,7 @@ export default class Pie extends Chart {
       data,
       angleField,
       colorField,
+      label,
       innerRadius = 0,
       radius = 0.8,
       cornerRadius = 0,
@@ -20,6 +22,10 @@ export default class Pie extends Chart {
 
     this.colorValue = item => item[colorField];
     this.angleValue = item => item[angleField];
+
+    this.label = label
+      ? new Label({ position: 'outer', style: { fontSize: 14 }, ...label })
+      : undefined;
 
     this.pieData = pie()
       .value(d => this.angleValue(d))
