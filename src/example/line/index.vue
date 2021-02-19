@@ -46,7 +46,9 @@ export default {
       },
       width: 800,
       height: 600,
-      label: {},
+      label: {
+        position: 'right'
+      },
       xAxis: {
         lineStyle: {
           strokeDasharray: '5,10,5'

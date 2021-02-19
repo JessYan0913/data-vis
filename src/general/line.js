@@ -16,6 +16,7 @@ import Chart from './chart';
 import { Axis } from './components/axis';
 import { Point } from './components/point';
 import { LabelPositionType } from './components/label';
+import { Label } from './components/label';
 
 const curveType = {
   linear: curveLinear,
@@ -33,6 +34,7 @@ export default class Line extends Chart {
       data,
       xField,
       yField,
+      label,
       point,
       lineType = 'linear',
       xAxis,
@@ -56,6 +58,10 @@ export default class Line extends Chart {
       .curve(curveType[lineType] ?? curveType.linear)
       .x(d => this.xScale(this.xValue(d)) + this.xScale.bandwidth() / 2)
       .y(d => this.yScale(this.yValue(d)));
+
+    this.label = label
+      ? new Label({ position: 'top', style: { fontSize: 14 }, ...label })
+      : undefined;
 
     this.point = point ? new Point({ ...point }) : undefined;
 
@@ -107,6 +113,16 @@ export default class Line extends Chart {
       selection: pointGroup,
       x: datum => this.xScale(this.xValue(datum)) + this.xScale.bandwidth() / 2,
       y: datum => this.yScale(this.yValue(datum))
+    });
+
+    //generate point label
+    this.label?.render({
+      type: LabelPositionType.LineLabelPosition,
+      selection: pointGroup,
+      pointSize: this.point?.size,
+      x: datum => this.xScale(this.xValue(datum)) + this.xScale.bandwidth() / 2,
+      y: datum => this.yScale(this.yValue(datum)),
+      text: datum => this.yValue(datum)
     });
   }
 }

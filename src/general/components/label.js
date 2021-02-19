@@ -42,6 +42,25 @@ const ColumnLabelPosition = {
   })
 };
 
+const LineLabelPosition = {
+  top: ({ datum, x, y, pointSize }) => ({
+    x: isFunction(x) ? x(datum) : +x,
+    y: isFunction(y) ? y(datum) - Math.sqrt(pointSize) - 2 : +y
+  }),
+  left: ({ datum, x, y, pointSize }) => ({
+    x: isFunction(x) ? x(datum) - Math.sqrt(pointSize) - 10 : +x,
+    y: isFunction(y) ? y(datum) + 5 : +y
+  }),
+  bottom: ({ datum, x, y, pointSize }) => ({
+    x: isFunction(x) ? x(datum) : +x,
+    y: isFunction(y) ? y(datum) + Math.sqrt(pointSize) * 2 + 2 : +y
+  }),
+  right: ({ datum, x, y, pointSize }) => ({
+    x: isFunction(x) ? x(datum) + Math.sqrt(pointSize) + 10 : +x,
+    y: isFunction(y) ? y(datum) + 5 : +y
+  })
+};
+
 const PieLabelPosition = {
   inner: ({ datum, innerRadius, radius }) => {
     const arcCentroid = arc()
@@ -67,6 +86,7 @@ const PieLabelPosition = {
 
 export const LabelPositionType = {
   ColumnLabelPosition,
+  LineLabelPosition,
   PieLabelPosition
 };
 
