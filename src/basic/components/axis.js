@@ -1,21 +1,68 @@
 import { axisBottom, axisLeft, axisRight, axisTop } from 'd3';
 import { parseStyle } from '../utils/data-vis-util';
 
-const AxisPosition = {
-  top: ({ selection, scale }) => selection.append('g').call(axisTop(scale)),
-  left: ({ selection, scale }) =>
-    selection.append('g').call(axisLeft(scale).tickSize(0)),
-  bottom: ({ selection, scale, height }) =>
-    selection
-      .append('g')
-      .call(axisBottom(scale))
-      .attr('transform', `translate(${0}, ${height})`),
-  right: ({ selection, scale, width }) =>
-    selection
-      .append('g')
-      .call(axisRight(scale).tickSize(0))
-      .attr('transform', `translate(${width}, ${0})`)
-};
+class AxisPosition {
+  constructor(props) {
+    const { selection, scale, height, width, title } = props;
+
+    this.scale = scale;
+    this.height = height;
+    this.width = width;
+    this.title = {
+      offset: 30,
+      autoRotate: true,
+      style: { fill: 'black' },
+      ...title
+    };
+    this.axisGroup = selection.append('g');
+    this.axisTitle = this.title.text
+      ? this.axisGroup.append('text').text(this.title.text)
+      : undefined;
+
+    parseStyle(this.axisTitle, this.title.style);
+  }
+
+  top() {
+    this.axisTitle?.attr(
+      'transform',
+      `translate(${this.width / 2}, ${-this.title.offset})`
+    );
+    return this.axisGroup.call(axisTop(this.scale));
+  }
+
+  left() {
+    this.axisTitle?.attr(
+      'transform',
+      this.title.autoRotate
+        ? `rotate(${270}),translate(${-this.height / 2}, ${-this.title.offset})`
+        : `translate(${-this.title.offset / 2}, ${this.height / 2})`
+    );
+    return this.axisGroup.call(axisLeft(this.scale).tickSize(0));
+  }
+
+  bottom() {
+    console.log(this.title);
+    this.axisTitle?.attr(
+      'transform',
+      `translate(${this.width / 2}, ${this.title.offset})`
+    );
+    return this.axisGroup
+      .call(axisBottom(this.scale))
+      .attr('transform', `translate(${0}, ${this.height})`);
+  }
+
+  right() {
+    this.axisTitle?.attr(
+      'transform',
+      this.title.autoRotate
+        ? `rotate(${270}),translate(${-this.height / 2}, ${this.title.offset})`
+        : `translate(${this.title.offset / 2}, ${this.height / 2})`
+    );
+    return this.axisGroup
+      .call(axisRight(this.scale).tickSize(0))
+      .attr('transform', `translate(${this.width}, ${0})`);
+  }
+}
 
 const AxisLine = {
   top: ({ selection, height }) => selection.attr('y2', height),
@@ -33,7 +80,9 @@ export class Axis {
   }
 
   render(params) {
-    const axisGroup = AxisPosition[this.position]({ ...params });
+    const axisGroup = new AxisPosition({ ...params, title: this.title })[
+      this.position
+    ]();
     axisGroup.select('.domain').remove();
     if (this.lineStyle) {
       axisGroup

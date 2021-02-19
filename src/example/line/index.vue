@@ -49,12 +49,24 @@ export default {
       xAxis: {
         lineStyle: {
           strokeDasharray: '5,10,5'
+        },
+        title: {
+          text: '类别'
         }
       },
       yAxis: {
         lineStyle: {
           strokeDasharray: '5,10,5'
-        }
+        },
+        title: {
+          text: '价格',
+          autoRotate: true,
+          style: {
+            fill: 'red',
+            fontSize: 14
+          }
+        },
+        position: 'left'
       }
     });
     line.render();
