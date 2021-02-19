@@ -67,6 +67,10 @@ export default class Scatter extends Chart {
       ...axisConfig
     });
 
+    //TODO: 缺少图例组件
+
+    //TODO: 缺少分组展示功能
+
     //generate point
     const pointGroup = chartGroup
       .append('g')

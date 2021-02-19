@@ -72,6 +72,8 @@ export default class Pie extends Chart {
           this.innerHeight / 2})`
       );
 
+    //TODO: 缺少图例组件
+
     //generate statistic
     this.statistic?.render({ selection: chartGroup });
 

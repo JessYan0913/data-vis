@@ -93,6 +93,10 @@ export default class Line extends Chart {
 
     const lineGroup = chartGroup.append('g');
 
+    //TODO: 缺少图例组件
+
+    //TODO: 缺少分组展示功能
+
     //generate line
     lineGroup
       .append('path')

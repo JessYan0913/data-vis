@@ -80,6 +80,8 @@ export default class Column extends Chart {
       ([key, value]) => ({ key, value })
     );
 
+    //TODO: 缺少图例组件
+
     //generate column
     const columnGroup = chartGroup
       .selectAll('column')
