@@ -52,6 +52,7 @@ export default {
           fill: 'green'
         }
       },
+      label: {},
       width: 800,
       height: 600
     });

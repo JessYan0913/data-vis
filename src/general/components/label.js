@@ -42,7 +42,7 @@ const ColumnLabelPosition = {
   })
 };
 
-const LineLabelPosition = {
+const PointLabelPosition = {
   top: ({ datum, x, y, pointSize }) => ({
     x: isFunction(x) ? x(datum) : +x,
     y: isFunction(y) ? y(datum) - Math.sqrt(pointSize) - 2 : +y
@@ -86,7 +86,7 @@ const PieLabelPosition = {
 
 export const LabelPositionType = {
   ColumnLabelPosition,
-  LineLabelPosition,
+  PointLabelPosition,
   PieLabelPosition
 };
 

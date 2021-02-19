@@ -1,7 +1,7 @@
 import { max, min, scaleBand, scaleLinear, schemeCategory10 } from 'd3';
 import Chart from './chart';
 import { Axis } from './components/axis';
-import { Label } from './components/label';
+import { LabelPositionType, Label } from './components/label';
 import { Point } from './components/point';
 
 export default class Scatter extends Chart {
@@ -67,6 +67,7 @@ export default class Scatter extends Chart {
       ...axisConfig
     });
 
+    //generate point
     const pointGroup = chartGroup
       .append('g')
       .selectAll('point')
@@ -77,6 +78,16 @@ export default class Scatter extends Chart {
       selection: pointGroup,
       x: datum => this.xScale(this.xValue(datum)) + this.xScale.bandwidth() / 2,
       y: datum => this.yScale(this.yValue(datum))
+    });
+
+    //generate label
+    this.label?.render({
+      type: LabelPositionType.PointLabelPosition,
+      selection: pointGroup,
+      pointSize: this.point?.size,
+      x: datum => this.xScale(this.xValue(datum)) + this.xScale.bandwidth() / 2,
+      y: datum => this.yScale(this.yValue(datum)),
+      text: datum => this.yValue(datum)
     });
   }
 }

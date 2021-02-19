@@ -15,8 +15,7 @@ import {
 import Chart from './chart';
 import { Axis } from './components/axis';
 import { Point } from './components/point';
-import { LabelPositionType } from './components/label';
-import { Label } from './components/label';
+import { LabelPositionType, Label } from './components/label';
 
 const curveType = {
   linear: curveLinear,
@@ -117,7 +116,7 @@ export default class Line extends Chart {
 
     //generate point label
     this.label?.render({
-      type: LabelPositionType.LineLabelPosition,
+      type: LabelPositionType.PointLabelPosition,
       selection: pointGroup,
       pointSize: this.point?.size,
       x: datum => this.xScale(this.xValue(datum)) + this.xScale.bandwidth() / 2,
