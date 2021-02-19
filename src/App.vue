@@ -3,6 +3,7 @@
     <column />
     <pie />
     <line-chart />
+    <scatter />
   </div>
 </template>
 
@@ -10,13 +11,15 @@
 import Column from './example/column';
 import Pie from './example/pie';
 import LineChart from './example/line';
+import Scatter from './example/scatter';
 
 export default {
   name: 'App',
   components: {
     Column,
     Pie,
-    LineChart
+    LineChart,
+    Scatter
   }
 };
 </script>

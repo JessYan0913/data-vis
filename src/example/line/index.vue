@@ -47,7 +47,7 @@ export default {
       width: 800,
       height: 600,
       label: {
-        position: 'right'
+        position: 'top'
       },
       xAxis: {
         lineStyle: {
