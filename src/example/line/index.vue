@@ -98,7 +98,8 @@ export default {
       width: 800,
       height: 600,
       label: {
-        position: 'top'
+        position: 'top',
+        formatter: datum => `${datum.cpu.toFixed(1)}`
       },
       xAxis: {
         lineStyle: {

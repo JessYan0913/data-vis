@@ -1,4 +1,4 @@
-import { parseStyle } from '../utils/data-vis-util';
+import { parseStyle } from '../../utils/data-vis-util';
 
 const statisticText = function(props) {
   const { selection, style, formatter } = props;

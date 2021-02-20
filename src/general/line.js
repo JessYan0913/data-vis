@@ -98,7 +98,7 @@ export default class Line extends Chart {
 
     //generate line
     const groupData = Array.from(
-      group(this.data, this.seriesValue),
+      group(this.data, item => this.seriesValue(item)?.toString()),
       ([_, value]) => value
     );
 

@@ -1,4 +1,4 @@
-import { max, min, scaleBand, scaleLinear, schemeCategory10 } from 'd3';
+import { group, max, min, scaleBand, scaleLinear, schemeCategory10 } from 'd3';
 import Chart from './chart';
 import { Axis } from './components/axis';
 import { LabelPositionType, Label } from './components/label';
@@ -11,6 +11,7 @@ export default class Scatter extends Chart {
       data,
       xField,
       yField,
+      colorField,
       label,
       point,
       xAxis,
@@ -20,6 +21,7 @@ export default class Scatter extends Chart {
 
     this.xValue = item => item[xField];
     this.yValue = item => item[yField];
+    this.colorValue = item => item[colorField];
 
     this.yScale = scaleLinear()
       .domain([min(data, this.yValue), max(data, this.yValue)])
@@ -69,15 +71,21 @@ export default class Scatter extends Chart {
 
     //TODO: 缺少图例组件
 
-    //TODO: 缺少分组展示功能
-
     //generate point
+    const groupData = Array.from(
+      group(this.data, item => this.colorValue(item)?.toString()),
+      ([_, value]) => value
+    );
+
     const pointGroup = chartGroup
-      .append('g')
+      .selectAll('.point')
+      .data(groupData)
+      .join('g')
       .selectAll('point')
-      .data(this.data)
+      .data(datum => datum)
       .enter();
 
+    //TODO: 缺少Point的颜色和形状
     this.point?.render({
       selection: pointGroup,
       x: datum => this.xScale(this.xValue(datum)) + this.xScale.bandwidth() / 2,

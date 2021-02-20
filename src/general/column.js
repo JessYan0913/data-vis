@@ -75,14 +75,14 @@ export default class Column extends Chart {
       ...axisConfig
     });
 
-    const groupData = Array.from(
-      group(this.data, this.xValue),
-      ([key, value]) => ({ key, value })
-    );
-
     //TODO: 缺少图例组件
 
     //generate column
+    const groupData = Array.from(
+      group(this.data, item => this.xValue(item)?.toString()),
+      ([key, value]) => ({ key, value })
+    );
+
     const columnGroup = chartGroup
       .selectAll('column')
       .data(groupData)
