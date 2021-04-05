@@ -12,6 +12,8 @@ export default class Scatter extends Chart {
       xField,
       yField,
       colorField,
+      shapeField,
+      shape,
       label,
       point,
       xAxis,
@@ -22,6 +24,7 @@ export default class Scatter extends Chart {
     this.xValue = item => item[xField];
     this.yValue = item => item[yField];
     this.colorValue = item => item[colorField];
+    this.shapeValue = item => item[shapeField];
 
     this.yScale = scaleLinear()
       .domain([min(data, this.yValue), max(data, this.yValue)])
@@ -31,6 +34,8 @@ export default class Scatter extends Chart {
     this.xScale = scaleBand()
       .domain(data.map(this.xValue))
       .range([this.margin.left, this.innerWidth]);
+
+    this.shape = shape;
 
     this.label = label
       ? new Label({ position: 'top', style: { fontSize: 14 }, ...label })
@@ -88,6 +93,8 @@ export default class Scatter extends Chart {
     //TODO: 缺少Point的颜色和形状
     this.point?.render({
       selection: pointGroup,
+      shape: this.shape,
+      shapeField: datum => this.shapeValue(datum),
       x: datum => this.xScale(this.xValue(datum)) + this.xScale.bandwidth() / 2,
       y: datum => this.yScale(this.yValue(datum))
     });
